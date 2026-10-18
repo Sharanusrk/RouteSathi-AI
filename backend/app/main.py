@@ -45,17 +45,16 @@ app.include_router(safety_transport.router)
 app.include_router(admin_ml_pdf.router)
 
 
-@app.get("/")
-def root():
-    return {
-        "name": "SafeTrip AI API",
-        "tagline": "Plan Smarter. Travel Safer. Explore India.",
-        "status": "operational",
-        "docs_url": "/docs",
-    }
-
-
 if os.getenv("VERCEL"):
     # Vercel promotes these built files to its CDN and falls back to index.html
     # for client-side routes while FastAPI routes retain priority.
     app.frontend("/", directory="frontend/dist", fallback="index.html")
+else:
+    @app.get("/")
+    def root():
+        return {
+            "name": "SafeTrip AI API",
+            "tagline": "Plan Smarter. Travel Safer. Explore India.",
+            "status": "operational",
+            "docs_url": "/docs",
+        }
