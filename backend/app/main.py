@@ -1,3 +1,4 @@
+import os
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -52,3 +53,9 @@ def root():
         "status": "operational",
         "docs_url": "/docs",
     }
+
+
+if os.getenv("VERCEL"):
+    # Vercel promotes these built files to its CDN and falls back to index.html
+    # for client-side routes while FastAPI routes retain priority.
+    app.frontend("/", directory="frontend/dist", fallback="index.html")
