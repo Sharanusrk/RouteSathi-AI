@@ -84,11 +84,13 @@ def seed_vercel_database(db: Session) -> None:
         for place in db.query(TouristPlace.name, TouristPlace.city).all()
     }
     new_places = []
+    new_place_items = []
     for item, state, district in place_specs:
         key = (item["name"].lower(), item["city"].lower())
         if key in existing_places:
             continue
         existing_places.add(key)
+        new_place_items.append(item)
         new_places.append(
             TouristPlace(
                 state_id=state.id,
@@ -130,9 +132,7 @@ def seed_vercel_database(db: Session) -> None:
     history_rows = []
     category_links = []
     crowd_rows = []
-    for place, (item, _, _) in zip(new_places, [spec for spec in place_specs if (spec[0]["name"].lower(), spec[0]["city"].lower()) not in {
-        (name, city) for name, city in existing_places if False
-    }]):
+    for place, item in zip(new_places, new_place_items):
         history_rows.append(
             PlaceHistory(
                 place_id=place.id,
