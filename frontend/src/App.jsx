@@ -56,7 +56,7 @@ export default function App() {
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-2">
                     <a
-                      href="https://www.instagram.com/sainath_4501?utm_source=qr&stkn=MTJvMnN4c2J3MmRkbg%3D%3D"
+                      href="https://www.instagram.com/sharanu_srk/?hl=en"
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label="Instagram Profile"
@@ -68,7 +68,7 @@ export default function App() {
                       </svg>
                     </a>
                     <a
-                      href="https://www.linkedin.com/in/sainath-k-?utm_source=share_via&utm_content=profile&utm_medium=member_android"
+                      href="https://www.linkedin.com/in/sharanu-kumasgi"
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label="LinkedIn Profile"
@@ -83,13 +83,13 @@ export default function App() {
                   <span className="text-slate-300 font-medium">
                     Built by{' '}
                     <a
-                      href="https://www.linkedin.com/in/sainath-k-?utm_source=share_via&utm_content=profile&utm_medium=member_android"
+                      href="https://www.linkedin.com/in/sharanu-kumasgi"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-slate-800 font-bold tracking-wider hover:text-violet-600 transition-colors"
                       title="Connect on LinkedIn"
                     >
-                      SAINATH
+                      Sharanabasappa
                     </a>
                   </span>
                 </div>
