@@ -12,7 +12,11 @@ async def lifespan(app: FastAPI):
     Base.metadata.create_all(bind=engine)
     db = SessionLocal()
     try:
-        seed_database(db, train_models=not bool(os.getenv("VERCEL")))
+        if os.getenv("VERCEL"):
+            from app.database.vercel_seed import seed_vercel_database
+            seed_vercel_database(db)
+        else:
+            seed_database(db)
     finally:
         db.close()
     yield
