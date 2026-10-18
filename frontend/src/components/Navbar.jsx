@@ -14,6 +14,10 @@ import {
   LogOut,
   LogIn,
   UserPlus,
+  GraduationCap,
+  Instagram,
+  Linkedin,
+  Link2,
   Sparkles,
   Menu,
   X,
@@ -227,7 +231,7 @@ export default function Navbar() {
 
           {/* Mobile Dropdown Drawer for Small Screens */}
           {mobileMenuOpen && (
-            <div className="lg:hidden border-t border-slate-100 bg-white px-4 py-3 space-y-1 animate-fadeIn shadow-lg">
+            <div className="lg:hidden max-h-[calc(100svh-6rem)] overflow-y-auto border-t border-slate-100 bg-white px-4 py-3 space-y-1 animate-fadeIn shadow-lg">
               {primaryNavItems.map((item) => {
                 const Icon = item.icon;
                 const active = isActive(item.to);
@@ -250,6 +254,69 @@ export default function Navbar() {
                   </Link>
                 );
               })}
+              <section
+                className="mt-3 rounded-2xl border border-violet-100 bg-gradient-to-br from-violet-50 via-white to-sky-50 p-4 shadow-sm"
+                aria-labelledby="about-owner-heading"
+              >
+                <div className="flex items-center gap-3">
+                  <img
+                    src="/images/sharanabasappa-profile.jpg"
+                    alt="Sharanabasappa"
+                    className="h-16 w-16 shrink-0 rounded-full border-2 border-white object-cover shadow-md ring-2 ring-violet-200"
+                  />
+                  <div className="min-w-0">
+                    <p id="about-owner-heading" className="text-[10px] font-bold uppercase tracking-[0.16em] text-violet-600">
+                      About the owner
+                    </p>
+                    <h2 className="mt-0.5 truncate text-base font-extrabold text-slate-900">
+                      Sharanabasappa
+                    </h2>
+                    <p className="text-xs font-semibold text-slate-600">MCA Student</p>
+                  </div>
+                </div>
+                <div className="mt-3 space-y-2 text-xs text-slate-600">
+                  <div className="flex items-center gap-2">
+                    <GraduationCap className="h-4 w-4 shrink-0 text-violet-600" />
+                    <span>Sapthagiri NPS University</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4 shrink-0 text-sky-600" />
+                    <span>Bengaluru, India</span>
+                  </div>
+                </div>
+                <div className="mt-4 grid grid-cols-3 gap-2">
+                  <a
+                    href="https://linktr.ee/Srk_sharan"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Visit my Linktree"
+                    className="flex items-center justify-center gap-1 rounded-xl border border-violet-200 bg-white px-2 py-2 text-[10px] font-bold text-violet-700 transition hover:border-violet-300 hover:bg-violet-50"
+                  >
+                    <Link2 className="h-3.5 w-3.5" />
+                    Linktree
+                  </a>
+                  <a
+                    href="https://www.instagram.com/sharanu_srk/?hl=en"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Visit my Instagram profile"
+                    className="flex items-center justify-center gap-1 rounded-xl border border-pink-200 bg-white px-2 py-2 text-[10px] font-bold text-pink-700 transition hover:bg-pink-50"
+                  >
+                    <Instagram className="h-3.5 w-3.5" />
+                    Instagram
+                  </a>
+                  <a
+                    href="https://www.linkedin.com/in/sharanu-kumasgi"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Visit my LinkedIn profile"
+                    className="flex items-center justify-center gap-1 rounded-xl border border-sky-200 bg-white px-2 py-2 text-[10px] font-bold text-sky-700 transition hover:bg-sky-50"
+                  >
+                    <Linkedin className="h-3.5 w-3.5" />
+                    LinkedIn
+                  </a>
+                </div>
+              </section>
             </div>
           )}
         </div>
