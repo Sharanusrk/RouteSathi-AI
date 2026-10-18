@@ -1,4 +1,5 @@
 import json
+import os
 from datetime import datetime
 from sqlalchemy.orm import Session
 from app.config import DATASET_DIR, TOURISM_CATEGORIES
@@ -481,17 +482,18 @@ def _seed_all_india_cities_catalog(db: Session):
     db.commit()
 
 
-def seed_database(db: Session):
+def seed_database(db: Session, train_models: bool = True):
     """
     Populates the 22 database tables if not already seeded,
     integrating ProjectCapstone/Dataset + PDF dataset + All-India Cities + ML models.
     """
-    ensure_capstone_pdf_dataset()
+    if not os.getenv("VERCEL"):
+        ensure_capstone_pdf_dataset()
 
     if db.query(State).count() > 0 and db.query(TouristPlace).count() >= 50:
         _seed_all_india_cities_catalog(db)
         # Ensure ML models exist
-        if db.query(MlModelRecord).count() == 0:
+        if train_models and db.query(MlModelRecord).count() == 0:
             _seed_ml_models(db)
         return
 
@@ -914,7 +916,7 @@ def seed_database(db: Session):
         ])
 
     # 10. Seed Initial PDF Upload Record from SafeTrip_AI_Indian_Tourism_Safety_Dataset.pdf
-    if db.query(PdfUpload).count() == 0:
+    if not os.getenv("VERCEL") and db.query(PdfUpload).count() == 0:
         pdf_path = ensure_capstone_pdf_dataset()
         parsed_info = parse_tourism_pdf(pdf_path)
         db.add(PdfUpload(
@@ -938,7 +940,7 @@ def seed_database(db: Session):
     db.commit()
 
     # 11. Train & Persist ML Models if not yet in DB
-    if db.query(MlModelRecord).count() == 0:
+    if train_models and db.query(MlModelRecord).count() == 0:
         _seed_ml_models(db)
 
 
