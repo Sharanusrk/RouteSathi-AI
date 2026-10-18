@@ -158,6 +158,14 @@ export default function LandingPage() {
               >
                 Explore India
               </button>
+              <a
+                href="https://linktr.ee/Srk_sharan"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-7 py-3.5 rounded-xl border border-white/35 bg-white/10 text-white text-sm font-bold backdrop-blur-sm hover:bg-white/20 transition"
+              >
+                Visit My Profiles
+              </a>
             </div>
           </div>
           <a
