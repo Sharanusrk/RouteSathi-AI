@@ -149,6 +149,37 @@ export default function LandingPage() {
             </div>
           </div>
 
+          {/* FEATURED INDIA TRAVEL VIDEO */}
+          <section aria-labelledby="india-video-title" className="max-w-5xl mx-auto mb-10 sm:mb-12">
+            <div className="overflow-hidden rounded-3xl bg-slate-950 shadow-[0_24px_70px_-30px_rgba(15,23,42,0.55)]">
+              <div className="aspect-video w-full">
+                <iframe
+                  className="h-full w-full"
+                  src="https://www.youtube-nocookie.com/embed/4WZ2KAbuDns?rel=0"
+                  title="Incredible India travel film"
+                  loading="lazy"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
+              </div>
+              <div className="flex flex-col gap-1 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+                <div>
+                  <h2 id="india-video-title" className="text-sm font-extrabold text-white sm:text-base">A glimpse of Incredible India</h2>
+                  <p className="mt-1 text-xs text-slate-300">Find inspiration for the places you’ll explore with SafeTrip AI.</p>
+                </div>
+                <a
+                  href="https://www.youtube.com/watch?v=4WZ2KAbuDns"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-2 inline-flex w-fit items-center gap-1 text-xs font-bold text-sky-300 hover:text-white sm:mt-0"
+                >
+                  Video by Incredible India <ArrowRight className="h-3.5 w-3.5" />
+                </a>
+              </div>
+            </div>
+          </section>
+
           {/* MAIN BOOKING-STYLE SEARCH ENGINE WIDGET */}
           <form
             onSubmit={handlePlanTrip}
