@@ -1,8 +1,11 @@
 from typing import Dict, Any, Optional
+import logging
+
 import joblib
 import numpy as np
 from app.config import ML_MODELS_DIR
 
+logger = logging.getLogger(__name__)
 _MODEL_CACHE: Dict[str, Any] = {}
 
 
@@ -11,9 +14,23 @@ def load_model_bundle(model_name: str) -> Optional[Dict[str, Any]]:
         return _MODEL_CACHE[model_name]
     pkl_path = ML_MODELS_DIR / f"{model_name}.pkl"
     if pkl_path.exists():
-        bundle = joblib.load(pkl_path)
+        try:
+            bundle = joblib.load(pkl_path)
+            if not isinstance(bundle, dict):
+                raise ValueError("model bundle must be a dictionary")
+        except Exception as exc:
+            # Model artifacts can be unreadable when their Python or sklearn
+            # versions differ from the runtime. Keep the app available and let
+            # each predictor use its existing rule-based fallback.
+            logger.warning(
+                "Could not load ML model %s; using rule-based fallback (%s)",
+                model_name,
+                type(exc).__name__,
+            )
+            bundle = None
         _MODEL_CACHE[model_name] = bundle
         return bundle
+    _MODEL_CACHE[model_name] = None
     return None
 
 
