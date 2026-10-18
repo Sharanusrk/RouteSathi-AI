@@ -1,0 +1,34 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: safetrip-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - HOST=0.0.0.0
+      - DATABASE_URL=sqlite:////app/data/safetrip_ai.db
+      - JWT_SECRET_KEY=safetrip-ai-production-secret-key-change-in-prod-2026
+      - OPEN_METEO_ENABLED=true
+      - OSRM_ROUTING_ENABLED=true
+    volumes:
+      - safetrip_data:/app/data
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: safetrip-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  safetrip_data:
+    driver: local

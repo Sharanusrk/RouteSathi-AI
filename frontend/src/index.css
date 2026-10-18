@@ -1,0 +1,88 @@
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #f8fafc;
+  color: #0f172a;
+  margin: 0;
+  padding: 0;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+/* Shared light hero style, inspired by the clean travel landing page reference. */
+.st-page-hero {
+  background: linear-gradient(120deg, #fff 0%, #fcfaff 100%) !important;
+  color: #0f172a !important;
+  border: 1px solid #e8e5ef;
+  box-shadow: 0 12px 40px -34px rgba(15, 23, 42, 0.28) !important;
+}
+
+.st-page-hero h1,
+.st-page-hero h2,
+.st-page-hero h3 {
+  color: #0f172a !important;
+}
+
+.st-page-hero p {
+  color: #64748b !important;
+}
+
+.st-page-hero .bg-white\/10,
+.st-page-hero .bg-white\/20 {
+  background-color: #f5f3ff !important;
+}
+
+/* Fix Tailwind CDN Preflight vs Leaflet Tile & SVG Rendering */
+.leaflet-container {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 540px;
+  z-index: 1;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+.leaflet-container img,
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+  max-width: none !important;
+  max-height: none !important;
+  width: auto;
+  padding: 0;
+}
+
+.leaflet-pane,
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow,
+.leaflet-tile-container,
+.leaflet-pane > svg,
+.leaflet-pane > canvas,
+.leaflet-zoom-box,
+.leaflet-image-layer,
+.leaflet-layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+}

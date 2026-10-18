@@ -1,0 +1,86 @@
+# ==========================================
+# SafeTrip AI — Project Git Ignore
+# ==========================================
+
+# --- Node / Frontend ---
+node_modules/
+**/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+frontend/dist/
+dist/
+dist-ssr/
+
+# --- Python Virtual Environments ---
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+# --- Python Bytecode & Cache ---
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# --- Environment & Secret Variables ---
+.env
+.env.local
+.env.*.local
+*.env
+!.env.example
+!backend/.env.example
+
+# --- Local Databases & SQLite Locks ---
+# (Backend automatically re-creates & seeds safetrip_ai.db on launch)
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+
+# --- Runtime Uploads & Exports ---
+data/uploads/*
+!data/uploads/.gitkeep
+data/exports/*
+!data/exports/.gitkeep
+
+# --- Large Files (> 100MB exceeds GitHub push limits) ---
+Dataset/Indian Places to Visit Reviews Data/Review_db.csv
+*.zip
+*.tar.gz
+*.rar
+
+# --- IDEs & Code Editors ---
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# --- Operating System Files ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# --- Ensure Serialized ML Models & Datasets are Tracked ---
+!ml/models/*.pkl
+!backend/models/*.pkl
