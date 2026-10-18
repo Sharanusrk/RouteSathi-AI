@@ -129,7 +129,7 @@ export default function LandingPage() {
           aria-hidden="true"
           tabIndex="-1"
         />
-        <div className="absolute inset-0 bg-slate-950/45" />
+        <div className="absolute inset-0 bg-slate-950/60" />
         <div className="absolute inset-0 bg-gradient-to-b from-slate-950/15 via-transparent to-slate-950/55" />
         <div className="relative z-10 max-w-7xl mx-auto">
           <div className="text-center max-w-5xl mx-auto">
