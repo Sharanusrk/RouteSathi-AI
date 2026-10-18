@@ -117,70 +117,62 @@ export default function LandingPage() {
 
   return (
     <div className="pb-20">
-      {/* HERO SECTION */}
-      <section className="relative bg-white text-slate-900 pt-14 sm:pt-20 pb-16 px-4 sm:px-6 overflow-visible">
-        <div className="max-w-7xl mx-auto relative z-20">
-          <div className="text-center max-w-4xl mx-auto mb-10 sm:mb-12">
-            <div className="inline-flex items-center gap-2 text-[11px] sm:text-xs font-bold tracking-[0.18em] uppercase text-slate-500 mb-5">
-              <Sparkles className="w-4 h-4 text-violet-600" />
+      {/* VIDEO HERO */}
+      <section className="relative isolate flex min-h-[76svh] items-center justify-center overflow-hidden bg-slate-950 px-4 py-20 text-white sm:min-h-[calc(100svh-4rem)] sm:px-6">
+        <iframe
+          className="pointer-events-none absolute left-1/2 top-1/2 h-[56.25vw] min-h-full w-[177.78vh] min-w-full -translate-x-1/2 -translate-y-1/2"
+          src="https://www.youtube-nocookie.com/embed/4WZ2KAbuDns?autoplay=1&mute=1&controls=0&loop=1&playlist=4WZ2KAbuDns&playsinline=1&rel=0&modestbranding=1"
+          title="Incredible India travel video background"
+          loading="eager"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allow="autoplay; encrypted-media; picture-in-picture"
+          aria-hidden="true"
+          tabIndex="-1"
+        />
+        <div className="absolute inset-0 bg-slate-950/45" />
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/15 via-transparent to-slate-950/55" />
+        <div className="relative z-10 max-w-7xl mx-auto">
+          <div className="text-center max-w-5xl mx-auto">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-black/25 px-4 py-2 text-[11px] sm:text-xs font-bold tracking-[0.18em] uppercase text-white backdrop-blur-sm mb-6">
+              <Sparkles className="w-4 h-4 text-amber-300" />
               <span>Your India travel companion</span>
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.08] text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-fuchsia-600">
-              Discover your next adventure with AI
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.06] text-white drop-shadow-[0_3px_18px_rgba(0,0,0,0.45)]">
+              Plan your next <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-300 via-violet-300 to-fuchsia-300">India adventure</span> with AI
             </h1>
-            <p className="mt-5 text-base sm:text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
+            <p className="mt-6 text-base sm:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed drop-shadow">
               Personalized itineraries, thoughtful safety insights, and a smoother way to explore India.
             </p>
-            <div className="mt-7 flex flex-col sm:flex-row justify-center items-center gap-3">
+            <div className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-3">
               <button
                 type="button"
                 onClick={() => document.getElementById('trip-planner')?.scrollIntoView({ behavior: 'smooth', block: 'center' })}
-                className="px-6 py-3 rounded-xl bg-black text-white text-sm font-bold shadow-sm hover:bg-slate-800 transition"
+                className="px-7 py-3.5 rounded-xl bg-white text-slate-950 text-sm font-extrabold shadow-lg hover:bg-slate-100 transition"
               >
-                Plan a trip
+                Start planning <ArrowRight className="inline w-4 h-4 ml-1" />
               </button>
               <button
                 type="button"
                 onClick={() => navigate('/explore')}
-                className="px-6 py-3 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white text-sm font-bold shadow-md shadow-violet-200 hover:from-violet-500 hover:to-fuchsia-500 transition flex items-center gap-2"
+                className="px-7 py-3.5 rounded-xl border border-white/60 bg-black/20 text-white text-sm font-bold backdrop-blur-sm hover:bg-white/15 transition"
               >
-                Explore India <ArrowRight className="w-4 h-4" />
+                Explore India
               </button>
             </div>
           </div>
+          <a
+            href="https://www.youtube.com/watch?v=4WZ2KAbuDns"
+            target="_blank"
+            rel="noreferrer"
+            className="absolute bottom-5 right-4 sm:right-6 text-[10px] sm:text-xs text-white/75 hover:text-white"
+          >
+            Travel film by Incredible India
+          </a>
+        </div>
+      </section>
 
-          {/* FEATURED INDIA TRAVEL VIDEO */}
-          <section aria-labelledby="india-video-title" className="max-w-5xl mx-auto mb-10 sm:mb-12">
-            <div className="overflow-hidden rounded-3xl bg-slate-950 shadow-[0_24px_70px_-30px_rgba(15,23,42,0.55)]">
-              <div className="aspect-video w-full">
-                <iframe
-                  className="h-full w-full"
-                  src="https://www.youtube-nocookie.com/embed/4WZ2KAbuDns?rel=0"
-                  title="Incredible India travel film"
-                  loading="lazy"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                />
-              </div>
-              <div className="flex flex-col gap-1 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-                <div>
-                  <h2 id="india-video-title" className="text-sm font-extrabold text-white sm:text-base">A glimpse of Incredible India</h2>
-                  <p className="mt-1 text-xs text-slate-300">Find inspiration for the places you’ll explore with SafeTrip AI.</p>
-                </div>
-                <a
-                  href="https://www.youtube.com/watch?v=4WZ2KAbuDns"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-2 inline-flex w-fit items-center gap-1 text-xs font-bold text-sky-300 hover:text-white sm:mt-0"
-                >
-                  Video by Incredible India <ArrowRight className="h-3.5 w-3.5" />
-                </a>
-              </div>
-            </div>
-          </section>
-
-          {/* MAIN BOOKING-STYLE SEARCH ENGINE WIDGET */}
+      <section className="relative bg-white px-4 py-12 text-slate-900 sm:px-6 sm:py-16">
+        <div className="max-w-7xl mx-auto">          {/* MAIN BOOKING-STYLE SEARCH ENGINE WIDGET */}
           <form
             onSubmit={handlePlanTrip}
             id="trip-planner"
