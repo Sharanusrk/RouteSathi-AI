@@ -10,11 +10,12 @@ from app.api import auth, places, recommendations, safety_transport, admin_ml_pd
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     Base.metadata.create_all(bind=engine)
-    db = SessionLocal()
-    try:
-        seed_database(db)
-    finally:
-        db.close()
+    if not os.getenv("VERCEL"):
+        db = SessionLocal()
+        try:
+            seed_database(db)
+        finally:
+            db.close()
     yield
 
 
