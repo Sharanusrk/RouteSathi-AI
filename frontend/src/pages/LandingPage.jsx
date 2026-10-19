@@ -116,9 +116,9 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="pb-20">
+    <div className="pb-24 md:pb-20">
       {/* VIDEO HERO */}
-      <section className="relative isolate flex min-h-[76svh] items-center justify-center overflow-hidden bg-slate-950 px-4 py-20 text-white sm:min-h-[calc(100svh-4rem)] sm:px-6">
+      <section className="relative isolate flex min-h-[68svh] items-center justify-center overflow-hidden bg-slate-950 px-4 py-12 text-white sm:min-h-[calc(100svh-4rem)] sm:px-6 sm:py-20">
         <iframe
           className="pointer-events-none absolute left-1/2 top-1/2 h-[56.25vw] min-h-full w-[177.78vh] min-w-full -translate-x-1/2 -translate-y-1/2"
           src="https://www.youtube-nocookie.com/embed/4WZ2KAbuDns?autoplay=1&mute=1&controls=0&loop=1&playlist=4WZ2KAbuDns&playsinline=1&rel=0&modestbranding=1"
@@ -137,24 +137,24 @@ export default function LandingPage() {
               <Sparkles className="w-4 h-4 text-amber-300" />
               <span>Your India travel companion</span>
             </div>
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.06] text-white drop-shadow-[0_3px_18px_rgba(0,0,0,0.45)]">
+            <h1 className="text-3xl leading-tight sm:text-6xl sm:leading-[1.06] lg:text-7xl font-extrabold tracking-tight leading-[1.06] text-white drop-shadow-[0_3px_18px_rgba(0,0,0,0.45)]">
               Plan your next <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-300 via-violet-300 to-fuchsia-300">India adventure</span> with AI
             </h1>
-            <p className="mt-6 text-base sm:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed drop-shadow">
+            <p className="mt-4 text-sm sm:mt-6 sm:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed drop-shadow">
               Personalized itineraries, thoughtful safety insights, and a smoother way to explore India.
             </p>
-            <div className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-3">
+            <div className="mt-6 flex flex-col sm:flex-row justify-center items-stretch sm:items-center gap-2.5 sm:mt-8 sm:gap-3">
               <button
                 type="button"
                 onClick={() => document.getElementById('trip-planner')?.scrollIntoView({ behavior: 'smooth', block: 'center' })}
-                className="px-7 py-3.5 rounded-xl bg-white text-slate-950 text-sm font-extrabold shadow-lg hover:bg-slate-100 transition"
+                className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white text-slate-950 text-sm font-extrabold shadow-lg hover:bg-slate-100 transition"
               >
                 Start planning <ArrowRight className="inline w-4 h-4 ml-1" />
               </button>
               <button
                 type="button"
                 onClick={() => navigate('/explore')}
-                className="px-7 py-3.5 rounded-xl border border-white/60 bg-black/20 text-white text-sm font-bold backdrop-blur-sm hover:bg-white/15 transition"
+                className="w-full sm:w-auto px-6 py-3.5 rounded-xl border border-white/60 bg-black/20 text-white text-sm font-bold backdrop-blur-sm hover:bg-white/15 transition"
               >
                 Explore India
               </button>
@@ -162,7 +162,7 @@ export default function LandingPage() {
                 href="https://linktr.ee/Srk_sharan"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-7 py-3.5 rounded-xl border border-white/35 bg-white/10 text-white text-sm font-bold backdrop-blur-sm hover:bg-white/20 transition"
+                className="hidden sm:inline-flex sm:w-auto px-6 py-3.5 rounded-xl border border-white/35 bg-white/10 text-white text-sm font-bold backdrop-blur-sm hover:bg-white/20 transition"
               >
                 Visit My Profiles
               </a>
@@ -172,7 +172,7 @@ export default function LandingPage() {
             href="https://www.youtube.com/watch?v=4WZ2KAbuDns"
             target="_blank"
             rel="noreferrer"
-            className="absolute bottom-5 right-4 sm:right-6 text-[10px] sm:text-xs text-white/75 hover:text-white"
+            className="hidden sm:block absolute bottom-5 right-4 sm:right-6 text-[10px] sm:text-xs text-white/75 hover:text-white"
           >
             Travel film by Incredible India
           </a>
@@ -184,7 +184,7 @@ export default function LandingPage() {
           <form
             onSubmit={handlePlanTrip}
             id="trip-planner"
-            className="bg-white text-slate-900 rounded-3xl shadow-[0_18px_70px_-42px_rgba(30,41,59,0.35)] p-5 sm:p-7 border border-slate-200/80 max-w-6xl mx-auto scroll-mt-28"
+            className="bg-white text-slate-900 rounded-3xl shadow-[0_18px_70px_-42px_rgba(30,41,59,0.35)] p-4 sm:p-7 border border-slate-200/80 max-w-6xl mx-auto scroll-mt-28"
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4 items-end">
               {/* 1. FROM: Starting Location (All Indian Cities) */}
@@ -332,7 +332,7 @@ export default function LandingPage() {
           </form>
 
           {/* Quick Evaluation Scenarios (Section 48 Demo Flow) */}
-          <div className="max-w-6xl mx-auto mt-5 flex flex-wrap items-center justify-center gap-2 text-xs">
+          <div className="max-w-6xl mx-auto mt-5 hidden flex-wrap items-center justify-center gap-2 text-xs sm:flex">
             <span className="text-slate-500 font-semibold">Try a sample trip</span>
             <button
               onClick={() =>
@@ -364,8 +364,8 @@ export default function LandingPage() {
 
       {/* TOURISM CATEGORIES EXPLORER (Section 4 & 5) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 mt-4 relative z-20">
-        <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8">
-          <div className="flex items-center justify-between mb-4">
+        <div className="bg-white rounded-3xl border border-slate-200/90 p-4 sm:p-8">
+          <div className="flex flex-col items-start justify-between gap-3 mb-4 sm:flex-row sm:items-center">
             <div>
               <h2 className="text-lg font-extrabold text-slate-900">
                 Explore by Tourism Category
@@ -484,7 +484,7 @@ export default function LandingPage() {
 
       {/* FEATURED VERIFIED DESTINATIONS */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 mt-12">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col items-start justify-between gap-3 mb-6 sm:flex-row sm:items-center">
           <div>
             <h2 className="text-2xl font-extrabold text-slate-900">
               Top AI-Verified Indian Tourist Landmarks
