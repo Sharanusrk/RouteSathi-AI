@@ -232,29 +232,35 @@ export default function Navbar() {
 
           {/* Mobile Dropdown Drawer for Small Screens */}
           {mobileMenuOpen && (
-            <div className="lg:hidden max-h-[calc(100svh-5rem)] overflow-y-auto border-t border-slate-100 bg-white px-4 py-3 space-y-1 animate-fadeIn shadow-lg">
-              {primaryNavItems.map((item) => {
-                const Icon = item.icon;
-                const active = isActive(item.to);
-                return (
-                  <Link
-                    key={item.to}
-                    to={item.to}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium transition ${
-                      active
-                      ? 'bg-violet-50 text-violet-700 font-semibold'
-                      : 'text-slate-600 hover:text-slate-950 hover:bg-slate-50'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <Icon className={`w-4 h-4 ${active ? 'text-violet-600' : 'text-slate-400'}`} />
-                      <span>{item.label}</span>
-                    </div>
-                    <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-                  </Link>
-                );
-              })}
+            <div className="lg:hidden max-h-[calc(100svh-5rem)] overflow-y-auto border-t border-slate-100 bg-white px-4 py-3 shadow-lg animate-fadeIn">
+              <p className="px-3 pb-2 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">Quick access</p>
+              <div className="space-y-1">
+                {primaryNavItems.slice(0, 5).map((item) => {
+                  const Icon = item.icon;
+                  const active = isActive(item.to);
+                  return (
+                    <Link key={item.to} to={item.to} onClick={() => setMobileMenuOpen(false)}
+                      className={"flex min-h-11 items-center justify-between rounded-xl px-3.5 py-2.5 text-sm font-medium transition " + (active ? "bg-violet-50 text-violet-700 font-semibold" : "text-slate-600 hover:bg-slate-50")}>
+                      <span className="flex items-center gap-3">
+                        <Icon className={"h-4 w-4 " + (active ? "text-violet-600" : "text-slate-400")} />
+                        {item.label}
+                      </span>
+                      <ChevronRight className="h-4 w-4 text-slate-300" />
+                    </Link>
+                  );
+                })}
+              </div>
+              <details className="group mt-2 rounded-xl border border-slate-100">
+                <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between rounded-xl px-3.5 text-sm font-semibold text-slate-600">
+                  More tools <span className="text-violet-600 transition group-open:rotate-90">›</span>
+                </summary>
+                <div className="space-y-1 border-t border-slate-100 p-2">
+                  {primaryNavItems.slice(5).map((item) => {
+                    const Icon = item.icon;
+                    return <Link key={item.to} to={item.to} onClick={() => setMobileMenuOpen(false)} className="flex min-h-11 items-center gap-3 rounded-lg px-3 text-sm text-slate-600 hover:bg-slate-50"><Icon className="h-4 w-4 text-slate-400" />{item.label}</Link>;
+                  })}
+                </div>
+              </details>
               <section
                 className="mt-3 rounded-2xl border border-violet-100 bg-gradient-to-br from-violet-50 via-white to-sky-50 p-4 shadow-sm"
                 aria-labelledby="about-owner-heading"
