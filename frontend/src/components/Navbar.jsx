@@ -186,6 +186,7 @@ export default function Navbar() {
                     </Link>
                     <Link
                       to="/register"
+                      aria-label="Create a SafeTrip account"
                       className="flex items-center gap-1.5 px-2.5 sm:px-4 py-2 rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white text-xs font-bold shadow-md shadow-violet-200 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
                     >
                       <UserPlus className="w-3.5 h-3.5" />
@@ -232,7 +233,7 @@ export default function Navbar() {
 
           {/* Mobile Dropdown Drawer for Small Screens */}
           {mobileMenuOpen && (
-            <div className="lg:hidden max-h-[calc(100svh-5rem)] overflow-y-auto border-t border-slate-100 bg-white px-4 py-3 shadow-lg animate-fadeIn">
+            <div className="lg:hidden max-h-[calc(100svh-5rem)] overflow-y-auto border-t border-slate-100 bg-white px-4 py-3 pb-28 shadow-lg animate-fadeIn">
               <p className="px-3 pb-2 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">Quick access</p>
               <div className="space-y-1">
                 {primaryNavItems.slice(0, 5).map((item) => {
