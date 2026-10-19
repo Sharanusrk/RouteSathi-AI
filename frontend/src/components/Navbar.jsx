@@ -179,14 +179,14 @@ export default function Navbar() {
                   <div className="flex items-center gap-2">
                     <Link
                       to="/login"
-                      className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-black hover:bg-slate-800 text-white text-xs font-semibold border border-black transition-all duration-200"
+                      className="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-full bg-black hover:bg-slate-800 text-white text-xs font-semibold border border-black transition-all duration-200"
                     >
                       <LogIn className="w-3.5 h-3.5 text-white" />
                       <span>Sign in</span>
                     </Link>
                     <Link
                       to="/register"
-                      className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white text-xs font-bold shadow-md shadow-violet-200 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+                      className="flex items-center gap-1.5 px-2.5 sm:px-4 py-2 rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white text-xs font-bold shadow-md shadow-violet-200 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
                     >
                       <UserPlus className="w-3.5 h-3.5" />
                       <span className="hidden sm:inline">Get started</span>
@@ -198,7 +198,8 @@ export default function Navbar() {
                 <button
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                   className="lg:hidden p-2 rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 transition"
-                  aria-label="Toggle Navigation"
+                  aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+                  aria-expanded={mobileMenuOpen}
                 >
                   {mobileMenuOpen ? <X className="w-5 h-5 text-sky-400" /> : <Menu className="w-5 h-5" />}
                 </button>
@@ -231,7 +232,7 @@ export default function Navbar() {
 
           {/* Mobile Dropdown Drawer for Small Screens */}
           {mobileMenuOpen && (
-            <div className="lg:hidden max-h-[calc(100svh-6rem)] overflow-y-auto border-t border-slate-100 bg-white px-4 py-3 space-y-1 animate-fadeIn shadow-lg">
+            <div className="lg:hidden max-h-[calc(100svh-5rem)] overflow-y-auto border-t border-slate-100 bg-white px-4 py-3 space-y-1 animate-fadeIn shadow-lg">
               {primaryNavItems.map((item) => {
                 const Icon = item.icon;
                 const active = isActive(item.to);
@@ -323,13 +324,12 @@ export default function Navbar() {
       </header>
 
       {/* Modern Floating Dock Bottom Bar for Mobile Phones */}
-      <nav className="md:hidden fixed bottom-3 left-3 right-3 z-50 bg-white/95 backdrop-blur-xl border border-slate-200 rounded-2xl shadow-xl shadow-slate-300/50 px-2 py-1.5 flex items-center justify-around">
+      <nav className="md:hidden fixed bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-3 right-3 z-50 bg-white/95 backdrop-blur-xl border border-slate-200 rounded-2xl shadow-xl shadow-slate-300/50 px-2 py-1.5 flex items-center justify-around">
         {[
           { to: '/', label: 'Home', icon: Sparkles },
           { to: '/planner', label: 'Planner', icon: Calendar },
           { to: '/safety', label: 'Safety', icon: ShieldCheck },
-          { to: '/map', label: 'Map', icon: MapPin },
-          { to: user ? '/dashboard' : '/login', label: user ? 'Profile' : 'Login', icon: User },
+          { to: '/explore', label: 'Explore', icon: MapPin },
         ].map((m) => {
           const Icon = m.icon;
           const active = isActive(m.to);
