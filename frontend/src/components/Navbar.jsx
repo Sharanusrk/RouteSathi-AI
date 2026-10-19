@@ -73,7 +73,7 @@ export default function Navbar() {
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="font-extrabold text-[19px] tracking-tight text-slate-950 group-hover:brightness-110 transition">
-                      SafeTrip <span className="bg-gradient-to-r from-blue-600 to-fuchsia-600 bg-clip-text text-transparent">AI</span>
+                      RouteRaksha <span className="bg-gradient-to-r from-blue-600 to-fuchsia-600 bg-clip-text text-transparent">AI</span>
                     </span>
                     <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-bold tracking-wide uppercase bg-violet-50 text-violet-700 border border-violet-100">
                       India
@@ -186,7 +186,7 @@ export default function Navbar() {
                     </Link>
                     <Link
                       to="/register"
-                      aria-label="Create a SafeTrip account"
+                      aria-label="Create a RouteRaksha account"
                       className="flex items-center gap-1.5 px-2.5 sm:px-4 py-2 rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white text-xs font-bold shadow-md shadow-violet-200 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
                     >
                       <UserPlus className="w-3.5 h-3.5" />
