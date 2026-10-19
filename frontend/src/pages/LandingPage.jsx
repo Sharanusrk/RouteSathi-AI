@@ -384,11 +384,11 @@ export default function LandingPage() {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-9 gap-2.5">
-            {HERO_CATEGORIES.map((c) => (
+            {HERO_CATEGORIES.map((c, index) => (
               <button
                 key={c.label}
                 onClick={() => navigate(`/explore?category=${encodeURIComponent(c.value)}`)}
-                className="flex flex-col items-center justify-center p-3 rounded-2xl bg-slate-50 hover:bg-sky-50 hover:border-sky-300 border border-slate-200/80 transition group text-center"
+                className={`flex flex-col items-center justify-center p-3 rounded-2xl bg-slate-50 hover:bg-sky-50 hover:border-sky-300 border border-slate-200/80 transition group text-center ${index > 7 ? "hidden sm:flex" : ""}`}
               >
                 <span className="text-2xl mb-1 group-hover:scale-110 transition">
                   {c.emoji}
@@ -463,7 +463,7 @@ export default function LandingPage() {
               <div
                 key={i}
                 onClick={() => navigate(feat.link)}
-                className="cursor-pointer bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-lg hover:border-sky-300 transition flex flex-col justify-between"
+                className={`cursor-pointer bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm hover:shadow-lg hover:border-sky-300 transition flex flex-col justify-between ${i > 2 ? "hidden sm:flex" : ""}`}
               >
                 <div>
                   <div className={`w-11 h-11 rounded-2xl ${feat.color} text-white flex items-center justify-center shadow-md mb-4`}>
