@@ -51,7 +51,7 @@ export default function App() {
             <footer className="bg-white text-slate-500 border-t border-slate-200 py-8 mt-16">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
                 <div>
-                  <span className="font-extrabold text-slate-900">SafeTrip AI</span> — Plan your trip with safety in mind.
+                  <span className="font-extrabold text-slate-900">RouteRaksha AI</span> — Plan your trip with safety in mind.
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-2">
