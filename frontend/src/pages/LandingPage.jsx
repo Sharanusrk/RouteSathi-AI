@@ -402,7 +402,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 6 PILLARS OF SAFETRIP AI */}
+      {/* 6 PILLARS OF ROUTERAKSHA AI */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 mt-12">
         <div className="text-center max-w-3xl mx-auto mb-8">
           <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
