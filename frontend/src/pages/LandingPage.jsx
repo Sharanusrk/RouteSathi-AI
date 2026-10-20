@@ -116,7 +116,7 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="pb-24 md:pb-20">
+    <div className="pb-4 md:pb-20">
       {/* VIDEO HERO */}
       <section className="relative isolate flex min-h-[68svh] items-center justify-center overflow-hidden bg-slate-950 px-4 py-12 text-white sm:min-h-[calc(100svh-4rem)] sm:px-6 sm:py-20">
         <iframe
