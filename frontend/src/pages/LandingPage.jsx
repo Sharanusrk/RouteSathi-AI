@@ -47,21 +47,21 @@ const HERITAGE_VIDEOS = [
     id: 'FGwnwBwK0QM',
     title: 'Sharana Basaveshwara Temple',
     place: 'Kalaburagi (Gulbarga), Karnataka',
-    description: 'A video visit to the historic shrine and its intricate architecture.',
+    description: 'Historic shrine in Kalaburagi.',
     url: 'https://www.youtube.com/watch?v=FGwnwBwK0QM',
   },
   {
     id: 'gyfpGcJDo90',
     title: 'Basaveshwara Temple',
     place: 'Basavakalyan, Karnataka',
-    description: 'Discover the temple’s history, architecture, and spiritual significance.',
+    description: 'Temple history and architecture.',
     url: 'https://www.youtube.com/watch?v=gyfpGcJDo90',
   },
   {
     id: 'GoFTzTNvgPc',
     title: 'Basavanna Heritage Trail',
     place: 'Basavakalyan, Karnataka',
-    description: 'See the Basaveshwara statue, Sharana Dhama, and nearby caves.',
+    description: 'Statue, Sharana Dhama, and caves.',
     url: 'https://www.youtube.com/watch?v=GoFTzTNvgPc',
   },
 ];
@@ -144,80 +144,102 @@ export default function LandingPage() {
 
   return (
     <div className="pb-4 md:pb-20">
-      {/* VIDEO HERO */}
-      <section className="relative isolate flex min-h-[68svh] items-center justify-center overflow-hidden bg-slate-950 px-4 py-12 text-white sm:min-h-[calc(100svh-4rem)] sm:px-6 sm:py-20">
-        <iframe
-          className="pointer-events-none absolute left-1/2 top-1/2 h-[56.25vw] min-h-full w-[177.78vh] min-w-full -translate-x-1/2 -translate-y-1/2"
-          src="https://www.youtube-nocookie.com/embed/4WZ2KAbuDns?autoplay=1&mute=1&controls=0&loop=1&playlist=4WZ2KAbuDns&playsinline=1&rel=0&modestbranding=1"
-          title="Incredible India travel video background"
-          loading="eager"
-          referrerPolicy="strict-origin-when-cross-origin"
-          allow="autoplay; encrypted-media; picture-in-picture"
-          aria-hidden="true"
-          tabIndex="-1"
-        />
-        <div className="absolute inset-0 bg-slate-950/60" />
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/15 via-transparent to-slate-950/55" />
-        <div className="relative z-10 max-w-7xl mx-auto">
-          <div className="text-center max-w-5xl mx-auto">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-black/25 px-4 py-2 text-[11px] sm:text-xs font-bold tracking-[0.18em] uppercase text-white backdrop-blur-sm mb-6">
-              <Sparkles className="w-4 h-4 text-amber-300" />
-              <span>Your India travel companion</span>
+      {/* STILL HERO: the film plays only when a visitor taps it. */}
+      <section className="relative overflow-hidden bg-[#f4f1e9] px-4 py-10 text-[#17231f] sm:px-6 sm:py-16 lg:py-20">
+        <div aria-hidden="true" className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-[#d9a441]/15 blur-3xl" />
+        <div aria-hidden="true" className="pointer-events-none absolute -bottom-36 left-[-5rem] h-80 w-80 rounded-full bg-[#245c4a]/10 blur-3xl" />
+        <div className="relative mx-auto max-w-7xl">
+          <div className="grid items-center gap-9 lg:grid-cols-[1fr_1fr] lg:gap-16">
+            <div className="max-w-xl">
+              <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#245c4a]/15 bg-white/70 px-3.5 py-2 text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#245c4a]">
+                <Sparkles className="h-3.5 w-3.5 text-[#c45a2e]" />
+                RouteSathi · India
+              </div>
+              <h1 className="text-5xl font-extrabold leading-[0.98] tracking-[-0.055em] sm:text-6xl lg:text-7xl">
+                India,
+                <br />
+                <span className="font-serif italic font-medium text-[#c45a2e]">your way.</span>
+              </h1>
+              <p className="mt-5 text-base font-medium text-[#52635c] sm:text-lg">
+                Plan better. Travel safer.
+              </p>
+              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+                <button
+                  type="button"
+                  onClick={() => document.getElementById('trip-planner')?.scrollIntoView({ behavior: 'smooth', block: 'center' })}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#245c4a] px-5 py-3.5 text-sm font-extrabold text-white shadow-lg shadow-[#245c4a]/20 transition hover:bg-[#194638]"
+                >
+                  Plan a trip <ArrowRight className="h-4 w-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => navigate('/explore')}
+                  className="inline-flex items-center justify-center rounded-xl border border-[#17231f]/15 bg-white/70 px-5 py-3.5 text-sm font-bold text-[#17231f] transition hover:bg-white"
+                >
+                  Explore places
+                </button>
+              </div>
+              <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-[11px] font-bold uppercase tracking-[0.12em] text-[#66776f]">
+                <span>AI itineraries</span>
+                <span>Safety insights</span>
+                <span>Made for India</span>
+              </div>
             </div>
-            <h1 className="text-3xl leading-tight sm:text-6xl sm:leading-[1.06] lg:text-7xl font-extrabold tracking-tight leading-[1.06] text-white drop-shadow-[0_3px_18px_rgba(0,0,0,0.45)]">
-              Plan your next <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-300 via-violet-300 to-fuchsia-300">India adventure</span> with AI
-            </h1>
-            <p className="mt-4 text-sm sm:mt-6 sm:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed drop-shadow">
-              Personalized itineraries, thoughtful safety insights, and a smoother way to explore India.
-            </p>
-            <div className="mt-6 flex flex-col sm:flex-row justify-center items-stretch sm:items-center gap-2.5 sm:mt-8 sm:gap-3">
-              <button
-                type="button"
-                onClick={() => document.getElementById('trip-planner')?.scrollIntoView({ behavior: 'smooth', block: 'center' })}
-                className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white text-slate-950 text-sm font-extrabold shadow-lg hover:bg-slate-100 transition"
-              >
-                Start planning <ArrowRight className="inline w-4 h-4 ml-1" />
-              </button>
-              <button
-                type="button"
-                onClick={() => navigate('/explore')}
-                className="w-full sm:w-auto px-6 py-3.5 rounded-xl border border-white/60 bg-black/20 text-white text-sm font-bold backdrop-blur-sm hover:bg-white/15 transition"
-              >
-                Explore India
-              </button>
-              <a
-                href="https://linktr.ee/Srk_sharan"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hidden sm:inline-flex sm:w-auto px-6 py-3.5 rounded-xl border border-white/35 bg-white/10 text-white text-sm font-bold backdrop-blur-sm hover:bg-white/20 transition"
-              >
-                Visit My Profiles
-              </a>
+
+            <div className="relative mx-auto w-full max-w-2xl">
+              <div className="absolute -inset-3 rotate-2 rounded-[2rem] bg-[#d9a441]/25" aria-hidden="true" />
+              <div className="relative aspect-[4/3] overflow-hidden rounded-[1.7rem] border-[6px] border-white bg-[#17231f] shadow-[0_28px_80px_-36px_rgba(23,35,31,0.55)]">
+                {activeVideoId === 'hero' ? (
+                  <iframe
+                    className="absolute inset-0 h-full w-full"
+                    src="https://www.youtube-nocookie.com/embed/4WZ2KAbuDns?autoplay=1&playsinline=1&rel=0"
+                    title="Incredible India travel film"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                  />
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setActiveVideoId('hero')}
+                    className="group absolute inset-0 flex h-full w-full items-center justify-center text-left"
+                    aria-label="Play Incredible India travel film"
+                  >
+                    <img
+                      src="https://i.ytimg.com/vi/4WZ2KAbuDns/hqdefault.jpg"
+                      alt="India travel film preview"
+                      className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]"
+                    />
+                    <span className="absolute inset-0 bg-gradient-to-t from-[#10251f]/75 via-[#10251f]/10 to-[#10251f]/15" />
+                    <span className="absolute left-5 top-5 rounded-full border border-white/25 bg-[#10251f]/35 px-3 py-1.5 text-[9px] font-extrabold uppercase tracking-[0.18em] text-white backdrop-blur">
+                      India in motion
+                    </span>
+                    <span className="relative flex h-16 w-16 items-center justify-center rounded-full bg-[#f5ca70] text-[#17231f] shadow-2xl transition duration-300 group-hover:scale-110">
+                      <Play className="ml-1 h-6 w-6 fill-current" aria-hidden="true" />
+                    </span>
+                    <span className="absolute bottom-5 left-5 text-xs font-bold text-white/90">
+                      Incredible India · Play film
+                    </span>
+                  </button>
+                )}
+              </div>
             </div>
           </div>
-          <a
-            href="https://www.youtube.com/watch?v=4WZ2KAbuDns"
-            target="_blank"
-            rel="noreferrer"
-            className="hidden sm:block absolute bottom-5 right-4 sm:right-6 text-[10px] sm:text-xs text-white/75 hover:text-white"
-          >
-            Travel film by Incredible India
-          </a>
         </div>
       </section>
 
-      <section className="relative bg-white px-4 py-12 text-slate-900 sm:px-6 sm:py-16">
+      <section className="relative bg-[#f4f1e9] px-4 py-10 text-slate-900 sm:px-6 sm:py-14">
         <div className="max-w-7xl mx-auto">          {/* MAIN BOOKING-STYLE SEARCH ENGINE WIDGET */}
           <form
             onSubmit={handlePlanTrip}
             id="trip-planner"
-            className="bg-white text-slate-900 rounded-3xl shadow-[0_18px_70px_-42px_rgba(30,41,59,0.35)] p-4 sm:p-7 border border-slate-200/80 max-w-6xl mx-auto scroll-mt-28"
+            className="mx-auto max-w-6xl rounded-[1.75rem] border border-white bg-white p-4 text-slate-900 shadow-[0_24px_80px_-48px_rgba(23,35,31,0.45)] sm:p-7 scroll-mt-28"
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4 items-end">
               {/* 1. FROM: Starting Location (All Indian Cities) */}
               <div className="lg:col-span-3">
                 <AllIndiaCitySelect
-                  label="1. From (Starting City — All India)"
+                  label="From"
                   value={startLocation}
                   onChange={setStartLocation}
                   apiCities={allCities}
@@ -230,7 +252,7 @@ export default function LandingPage() {
               <div className="lg:col-span-4 relative">
                 <div className="flex items-center justify-between mb-1">
                   <label className="block text-[11px] font-extrabold uppercase tracking-wider text-slate-500">
-                    2. To (Destination City or State)
+                    To
                   </label>
                   <button
                     type="button"
@@ -324,7 +346,7 @@ export default function LandingPage() {
             <div className="mt-5 pt-4 border-t border-slate-100 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div className="flex items-center flex-wrap gap-1.5">
                 <span className="text-xs font-extrabold text-slate-500 mr-1">
-                  Tourism Preferences:
+                  Interests:
                 </span>
                 {['Historical', 'Couple', 'Museum', 'Food', 'Temple', 'Nature', 'Beach', 'Hill Station', 'Fort', 'Wildlife'].map(
                   (pref) => {
@@ -349,10 +371,10 @@ export default function LandingPage() {
 
               <button
                 type="submit"
-                className="px-7 py-3.5 rounded-xl bg-black hover:bg-slate-800 text-white font-bold text-sm shadow-sm flex items-center justify-center gap-2 shrink-0 transition"
+                className="px-7 py-3.5 rounded-xl bg-[#245c4a] hover:bg-[#194638] text-white font-bold text-sm shadow-sm flex items-center justify-center gap-2 shrink-0 transition"
               >
                 <Sparkles className="w-4 h-4" />
-                <span>Plan My Trip</span>
+                <span>Build my trip</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -360,14 +382,14 @@ export default function LandingPage() {
 
           {/* Quick Evaluation Scenarios (Section 48 Demo Flow) */}
           <div className="max-w-6xl mx-auto mt-5 hidden flex-wrap items-center justify-center gap-2 text-xs sm:flex">
-            <span className="text-slate-500 font-semibold">Try a sample trip</span>
+            <span className="text-slate-500 font-semibold">Quick starts</span>
             <button
               onClick={() =>
                 runCanonicalDemo('Delhi', 3, 15000, ['Historical', 'Couple', 'Museum', 'Food'])
               }
               className="px-3 py-1.5 rounded-full bg-blue-50 hover:bg-blue-100 border border-blue-100 text-blue-700 font-bold transition"
             >
-              🚀 Demo 1: Bangalore → Delhi (3 Days, ₹15,000, Historical + Couple + Food)
+              🚀 Delhi · 3 days
             </button>
             <button
               onClick={() =>
@@ -375,7 +397,7 @@ export default function LandingPage() {
               }
               className="px-3 py-1.5 rounded-full bg-violet-50 hover:bg-violet-100 border border-violet-100 text-violet-700 font-bold transition"
             >
-              🏰 Demo 2: Karnataka → Mysore Royal Circuit (2 Days, ₹10,000)
+              🏰 Mysore · 2 days
             </button>
             <button
               onClick={() =>
@@ -383,7 +405,7 @@ export default function LandingPage() {
               }
               className="px-3 py-1.5 rounded-full bg-fuchsia-50 hover:bg-fuchsia-100 border border-fuchsia-100 text-fuchsia-700 font-bold transition"
             >
-              🐪 Demo 3: Jaipur Royal Heritage (3 Days, ₹20,000)
+              🐪 Jaipur · 3 days
             </button>
           </div>
         </div>
@@ -402,7 +424,7 @@ export default function LandingPage() {
                 Stories from North Karnataka
               </h2>
               <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-300 sm:text-base">
-                Visit Sharana Basaveshwara Temple in Kalaburagi and discover Basavanna’s heritage in Basavakalyan through local video stories.
+                Local stories from Kalaburagi and Basavakalyan.
               </p>
             </div>
             <span className="text-xs font-semibold text-slate-400">3 video stories</span>
@@ -475,14 +497,14 @@ export default function LandingPage() {
                 Explore by Tourism Category
               </h2>
               <p className="text-xs text-slate-500">
-                Click any category to filter verified Indian tourist places with safety & crowd scores
+                Find places by the way you like to travel.
               </p>
             </div>
             <button
               onClick={() => navigate('/explore')}
               className="text-xs font-bold text-sky-600 hover:underline flex items-center gap-1"
             >
-              <span>View All 36 States & UTs</span>
+              <span>All states & UTs</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -510,10 +532,10 @@ export default function LandingPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 mt-12">
         <div className="text-center max-w-3xl mx-auto mb-8">
           <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
-            More Than a Recommendation Site — A Unified Safety & Trip Intelligence Engine
+            Travel, planned with care
           </h2>
           <p className="text-sm text-slate-600 mt-2">
-            Combining Machine Learning models trained on Indian Tourism,IMD Rainfall, NCRB Crime, and Road Risk datasets with real-time weather and routing.
+            Smart planning. Safer routes. Better discovery.
           </p>
         </div>
 
@@ -523,42 +545,42 @@ export default function LandingPage() {
               icon: ShieldCheck,
               color: 'bg-emerald-500',
               title: 'Multi-Factor AI Safety Engine',
-              desc: 'Evaluates Weather Risk (20%), Route Risk (20%), Crowd Risk (15%), Time Risk (15%), Location Risk (15%), and Scam Risk (15%) with explainable scores & safer alternatives.',
+              desc: 'Weather, routes, crowds, and local risks—one clear score.',
               link: '/safety',
             },
             {
               icon: Navigation,
               color: 'bg-sky-600',
               title: 'Safe Route vs. Shortest Route',
-              desc: 'Uses NetworkX & OpenStreetMap/OSRM to compare Route A (shortest distance) against Route B (lower-risk arterial & metro corridor) on an interactive Leaflet map.',
+              desc: 'Compare quick routes with safer ways to get there.',
               link: '/map',
             },
             {
               icon: CloudSun,
               color: 'bg-amber-500',
               title: 'Weather-Activity & Crowd ML',
-              desc: 'Integrates Open-Meteo live telemetry with Random Forest & Decision Tree classifiers to flag high-risk outdoor activities during heavy rain or heat waves.',
+              desc: 'Plan outdoor stops around local weather.',
               link: '/safety',
             },
             {
               icon: Calendar,
               color: 'bg-indigo-600',
               title: 'Dynamic Geo-Clustered Itineraries',
-              desc: 'Automatically groups nearby monuments on the same day, checks opening hours, and computes Metro, Bus, Auto, and Cab fares between stops.',
+              desc: 'Group nearby places and compare local travel costs.',
               link: '/planner',
             },
             {
               icon: FileText,
               color: 'bg-rose-600',
               title: '9-Step PDF Ingestion & PDF Export',
-              desc: 'Extracts and validates structured tourism datasets from uploaded PDFs with admin approval, and exports complete traveler PDF itineraries.',
+              desc: 'Save and share your trip as a PDF.',
               link: '/pdf',
             },
             {
               icon: Cpu,
               color: 'bg-purple-600',
               title: 'IEEE / ML Evaluation Dashboard',
-              desc: 'Compares Random Forest, Decision Tree, and Logistic Regression with Confusion Matrices, Precision, Recall, F1, ROC-AUC, and Feature Importance.',
+              desc: 'See how the travel AI is evaluated.',
               link: '/ml-dashboard',
             },
           ].map((feat, i) => {
@@ -577,7 +599,7 @@ export default function LandingPage() {
                   <p className="text-xs text-slate-600 mt-2 leading-relaxed">{feat.desc}</p>
                 </div>
                 <div className="mt-4 pt-3 border-t border-slate-100 flex items-center text-xs font-bold text-sky-600">
-                  <span>Open Module</span>
+                  <span>Explore</span>
                   <ArrowRight className="w-3.5 h-3.5 ml-1" />
                 </div>
               </div>
@@ -591,17 +613,17 @@ export default function LandingPage() {
         <div className="flex flex-col items-start justify-between gap-3 mb-6 sm:flex-row sm:items-center">
           <div>
             <h2 className="text-2xl font-extrabold text-slate-900">
-              Top AI-Verified Indian Tourist Landmarks
+              Places worth the journey
             </h2>
             <p className="text-xs text-slate-500">
-              Curated from ProjectCapstone Indian Tourism Dataset with verified history, timings & safety scores
+              A few favorites from across India.
             </p>
           </div>
           <button
             onClick={() => navigate('/explore')}
             className="px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition"
           >
-            Explore All 300+ Places
+            Explore all places
           </button>
         </div>
 
