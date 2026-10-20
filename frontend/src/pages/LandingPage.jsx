@@ -2,20 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Sparkles,
-  MapPin,
   Calendar,
-  Users,
-  IndianRupee,
   ShieldCheck,
   CloudSun,
   Navigation,
   FileText,
   ArrowRight,
-  Search,
-  CheckCircle2,
   Cpu,
   Play,
-  ExternalLink,
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
@@ -49,13 +43,11 @@ const HERITAGE_VIDEOS = [
     id: 'FGwnwBwK0QM',
     title: 'Sharana Basaveshwara Temple',
     place: 'Kalaburagi (Gulbarga), Karnataka',
-    url: 'https://www.youtube.com/watch?v=FGwnwBwK0QM',
   },
   {
     id: 'gyfpGcJDo90',
     title: 'Basaveshwara Temple',
     place: 'Basavakalyan, Karnataka',
-    url: 'https://www.youtube.com/watch?v=gyfpGcJDo90',
   },
 ];
 
@@ -136,6 +128,7 @@ export default function LandingPage() {
     });
     navigate('/planner?auto=1');
   };
+
   const goToHeritageSlide = (direction) => {
     setActiveVideoId(null);
     setActiveHeritageIndex((current) => (
@@ -143,10 +136,9 @@ export default function LandingPage() {
     ) % HERITAGE_VIDEOS.length);
   };
 
-
   return (
     <div className="pb-4 md:pb-20">
-      {/* STILL HERO: the film plays only when a visitor taps it. */}
+      {/* Two-video slider: play a clip or swipe to the next. */}
       <section className="relative overflow-hidden bg-[#f4f1e9] px-4 py-10 text-[#17231f] sm:px-6 sm:py-16 lg:py-20">
         <div aria-hidden="true" className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-[#d9a441]/15 blur-3xl" />
         <div aria-hidden="true" className="pointer-events-none absolute -bottom-36 left-[-5rem] h-80 w-80 rounded-full bg-[#245c4a]/10 blur-3xl" />
