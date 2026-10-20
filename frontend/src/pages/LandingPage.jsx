@@ -41,13 +41,21 @@ const HERO_CATEGORIES = [
 const HERITAGE_VIDEOS = [
   {
     id: 'FGwnwBwK0QM',
-    title: 'Sharana Basaveshwara Temple',
-    place: 'Kalaburagi (Gulbarga), Karnataka',
+    title: 'Sharana Basaveshwara',
+    place: 'Kalaburagi',
+    poster: 'https://commons.wikimedia.org/wiki/Special:FilePath/Interior_of_temple_Basaveshwara.jpg?width=1400',
+    photoAlt: 'Interior of Shri Sharana Basaveshwara Devasthana',
+    photoSource: 'https://commons.wikimedia.org/wiki/File:Interior_of_temple_Basaveshwara.jpg',
+    photoCredit: 'Kiranpawar3210 · CC BY-SA 4.0',
   },
   {
     id: 'gyfpGcJDo90',
-    title: 'Basaveshwara Temple',
-    place: 'Basavakalyan, Karnataka',
+    title: 'Basavanna',
+    place: 'Basavakalyan',
+    poster: 'https://commons.wikimedia.org/wiki/Special:FilePath/Basavanna.png?width=1200',
+    photoAlt: 'Portrait of Basavanna',
+    photoSource: 'https://commons.wikimedia.org/wiki/File:Basavanna.png',
+    photoCredit: 'Karnataka Dept. · CC BY 4.0',
   },
 ];
 
@@ -136,6 +144,14 @@ export default function LandingPage() {
     ) % HERITAGE_VIDEOS.length);
   };
 
+  useEffect(() => {
+    if (activeVideoId || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+    const timer = window.setInterval(() => {
+      setActiveHeritageIndex((current) => (current + 1) % HERITAGE_VIDEOS.length);
+    }, 7000);
+    return () => window.clearInterval(timer);
+  }, [activeVideoId]);
+
   return (
     <div className="pb-4 md:pb-20">
       {/* Two-video slider: play a clip or swipe to the next. */}
@@ -145,18 +161,11 @@ export default function LandingPage() {
         <div className="relative mx-auto max-w-7xl">
           <div className="grid items-center gap-9 lg:grid-cols-[1fr_1fr] lg:gap-16">
             <div className="max-w-xl">
-              <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#245c4a]/15 bg-white/70 px-3.5 py-2 text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#245c4a]">
-                <Sparkles className="h-3.5 w-3.5 text-[#c45a2e]" />
-                RouteSathi · India
-              </div>
               <h1 className="text-5xl font-extrabold leading-[0.98] tracking-[-0.055em] sm:text-6xl lg:text-7xl">
                 India,
                 <br />
                 <span className="font-serif italic font-medium text-[#c45a2e]">your way.</span>
               </h1>
-              <p className="mt-5 text-base font-medium text-[#52635c] sm:text-lg">
-                Plan better. Travel safer.
-              </p>
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
                 <button
                   type="button"
@@ -172,11 +181,6 @@ export default function LandingPage() {
                 >
                   Explore places
                 </button>
-              </div>
-              <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-[11px] font-bold uppercase tracking-[0.12em] text-[#66776f]">
-                <span>AI itineraries</span>
-                <span>Safety insights</span>
-                <span>Made for India</span>
               </div>
             </div>
 
@@ -220,15 +224,12 @@ export default function LandingPage() {
                             aria-label={'Play ' + video.title}
                           >
                             <img
-                              src={'https://i.ytimg.com/vi/' + video.id + '/hqdefault.jpg'}
-                              alt=""
+                              src={video.poster}
+                              alt={video.photoAlt}
                               loading={index === activeHeritageIndex ? 'eager' : 'lazy'}
-                              className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]"
+                              className="absolute inset-0 h-full w-full object-cover object-center transition duration-700 group-hover:scale-[1.03]"
                             />
                             <span className="absolute inset-0 bg-gradient-to-t from-[#10251f]/80 via-[#10251f]/10 to-[#10251f]/15" />
-                            <span className="absolute left-5 top-5 rounded-full border border-white/25 bg-[#10251f]/40 px-3 py-1.5 text-[9px] font-extrabold uppercase tracking-[0.18em] text-white backdrop-blur">
-                              North Karnataka
-                            </span>
                             <span className="relative flex h-16 w-16 items-center justify-center rounded-full bg-[#f5ca70] text-[#17231f] shadow-2xl transition duration-300 group-hover:scale-110">
                               <Play className="ml-1 h-6 w-6 fill-current" aria-hidden="true" />
                             </span>
@@ -237,6 +238,17 @@ export default function LandingPage() {
                               <span className="mt-1 block text-base font-extrabold sm:text-lg">{video.title}</span>
                             </span>
                           </button>
+                        )}
+                        {activeVideoId !== video.id && (
+                          <a
+                            href={video.photoSource}
+                            target="_blank"
+                            rel="noreferrer"
+                            aria-label={'Photo credit: ' + video.photoCredit}
+                            className="absolute right-5 top-5 z-20 max-w-[70%] rounded-full border border-white/25 bg-[#10251f]/55 px-2.5 py-1.5 text-[8px] font-semibold text-white/90 backdrop-blur hover:bg-[#10251f]/80"
+                          >
+                            {video.photoCredit}
+                          </a>
                         )}
                       </div>
                     ))}
