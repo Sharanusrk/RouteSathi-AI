@@ -40,22 +40,33 @@ const HERO_CATEGORIES = [
 
 const HERITAGE_VIDEOS = [
   {
-    id: 'FGwnwBwK0QM',
-    title: 'Sharana Basaveshwara',
-    place: 'Kalaburagi',
-    poster: 'https://commons.wikimedia.org/wiki/Special:FilePath/Interior_of_temple_Basaveshwara.jpg?width=1400',
-    photoAlt: 'Interior of Shri Sharana Basaveshwara Devasthana',
-    photoSource: 'https://commons.wikimedia.org/wiki/File:Interior_of_temple_Basaveshwara.jpg',
-    photoCredit: 'Kiranpawar3210 · CC BY-SA 4.0',
+    id: 'Gg2vMsii6AI',
+    title: 'Rajasthan Bike Ride',
+    place: 'RAJASTHAN',
+    thumbnail: 'https://i.ytimg.com/vi/Gg2vMsii6AI/hqdefault.jpg',
   },
   {
-    id: 'gyfpGcJDo90',
+    id: 'K0woZZ9QU3M',
+    title: 'Udaipur on Two Wheels',
+    place: 'RAJASTHAN · UDAIPUR',
+    thumbnail: 'https://i.ytimg.com/vi/K0woZZ9QU3M/hqdefault.jpg',
+  },
+];
+
+const HERITAGE_PHOTOS = [
+  {
     title: 'Basavanna',
-    place: 'Basavakalyan',
-    poster: 'https://commons.wikimedia.org/wiki/Special:FilePath/Basavanna.png?width=1200',
-    photoAlt: 'Portrait of Basavanna',
-    photoSource: 'https://commons.wikimedia.org/wiki/File:Basavanna.png',
-    photoCredit: 'Karnataka Dept. · CC BY 4.0',
+    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Basavanna.png?width=500',
+    alt: 'Portrait of Basavanna',
+    source: 'https://commons.wikimedia.org/wiki/File:Basavanna.png',
+    credit: 'Karnataka Dept. · CC BY 4.0',
+  },
+  {
+    title: 'Sharana Basaveshwara',
+    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Interior_of_temple_Basaveshwara.jpg?width=500',
+    alt: 'Interior of Shri Sharana Basaveshwara Devasthana',
+    source: 'https://commons.wikimedia.org/wiki/File:Interior_of_temple_Basaveshwara.jpg',
+    credit: 'Kiranpawar3210 · CC BY-SA 4.0',
   },
 ];
 
@@ -185,7 +196,7 @@ export default function LandingPage() {
             <div
               className="relative mx-auto w-full max-w-2xl"
               role="region"
-              aria-label="North Karnataka video slider"
+              aria-label="Rajasthan travel video slider"
               onTouchStart={(event) => { sliderTouchStartX.current = event.changedTouches[0]?.clientX ?? null; }}
               onTouchEnd={(event) => {
                 const startX = sliderTouchStartX.current;
@@ -216,17 +227,9 @@ export default function LandingPage() {
                               allowFullScreen
                             />
                             <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#10251f]/50 via-transparent to-[#10251f]/15" />
-                            <div className="pointer-events-none absolute left-4 top-4 z-10 flex items-center gap-2 rounded-full border border-white/25 bg-[#10251f]/55 p-1.5 pr-3 text-white backdrop-blur">
-                              <img
-                                src={video.poster}
-                                alt={video.photoAlt}
-                                loading="eager"
-                                className="h-11 w-11 rounded-full border-2 border-white object-cover shadow-lg sm:h-14 sm:w-14"
-                              />
-                              <span>
-                                <span className="block text-[8px] font-extrabold uppercase tracking-[0.13em] text-white/75">{video.place}</span>
-                                <span className="block text-xs font-extrabold sm:text-sm">{video.title}</span>
-                              </span>
+                            <div className="pointer-events-none absolute left-4 top-4 z-10 rounded-full border border-white/25 bg-[#10251f]/55 px-3 py-2 text-white backdrop-blur">
+                              <span className="block text-[8px] font-extrabold uppercase tracking-[0.13em] text-white/75">{video.place}</span>
+                              <span className="block text-xs font-extrabold sm:text-sm">{video.title}</span>
                             </div>
                           </div>
                         ) : (
@@ -237,8 +240,8 @@ export default function LandingPage() {
                             aria-label={'Show video and photo of ' + video.title}
                           >
                             <img
-                              src={video.poster}
-                              alt={video.photoAlt}
+                              src={video.thumbnail}
+                              alt=""
                               loading="lazy"
                               className="absolute inset-0 h-full w-full object-cover object-center transition duration-700 group-hover:scale-[1.03]"
                             />
@@ -252,15 +255,6 @@ export default function LandingPage() {
                             </span>
                           </button>
                         )}
-                        <a
-                          href={video.photoSource}
-                          target="_blank"
-                          rel="noreferrer"
-                          aria-label={'Photo credit: ' + video.photoCredit}
-                          className="absolute right-5 top-5 z-20 max-w-[70%] rounded-full border border-white/25 bg-[#10251f]/55 px-2.5 py-1.5 text-[8px] font-semibold text-white/90 backdrop-blur hover:bg-[#10251f]/80"
-                        >
-                          {video.photoCredit}
-                        </a>
                       </div>
                     ))}
                   </div>
@@ -288,10 +282,7 @@ export default function LandingPage() {
                     <button
                       key={video.id}
                       type="button"
-                      onClick={() => {
-                        setActiveVideoId(null);
-                        setActiveHeritageIndex(index);
-                      }}
+                      onClick={() => setActiveHeritageIndex(index)}
                       aria-label={'Show video ' + (index + 1) + ': ' + video.title}
                       aria-current={activeHeritageIndex === index ? 'true' : undefined}
                       className={'h-2 rounded-full transition-all ' + (activeHeritageIndex === index ? 'w-8 bg-[#245c4a]' : 'w-2 bg-[#17231f]/25 hover:bg-[#17231f]/50')}
@@ -301,6 +292,29 @@ export default function LandingPage() {
                 <span className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#66776f]">
                   0{activeHeritageIndex + 1} / 02
                 </span>
+              </div>
+              <div className="mt-3 grid grid-cols-2 gap-2">
+                {HERITAGE_PHOTOS.map((photo) => (
+                  <a
+                    key={photo.title}
+                    href={photo.source}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={photo.title + ' photo; ' + photo.credit}
+                    className="flex min-w-0 items-center gap-2 rounded-xl border border-[#17231f]/10 bg-white/80 p-2 shadow-sm transition hover:bg-white"
+                  >
+                    <img
+                      src={photo.image}
+                      alt={photo.alt}
+                      loading="lazy"
+                      className="h-10 w-10 shrink-0 rounded-full object-cover"
+                    />
+                    <span className="min-w-0">
+                      <span className="block truncate text-[10px] font-extrabold text-[#17231f]">{photo.title}</span>
+                      <span className="block truncate text-[8px] text-[#66776f]">{photo.credit}</span>
+                    </span>
+                  </a>
+                ))}
               </div>
             </div>
           </div>
