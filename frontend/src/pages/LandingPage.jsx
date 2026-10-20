@@ -14,6 +14,8 @@ import {
   Search,
   CheckCircle2,
   Cpu,
+  Play,
+  ExternalLink,
 } from 'lucide-react';
 import { api } from '../services/api';
 import { useTrip } from '../context/TripContext';
@@ -40,6 +42,30 @@ const HERO_CATEGORIES = [
   { label: 'Photography', value: 'Photography', emoji: '📸' },
 ];
 
+const HERITAGE_VIDEOS = [
+  {
+    id: 'FGwnwBwK0QM',
+    title: 'Sharana Basaveshwara Temple',
+    place: 'Kalaburagi (Gulbarga), Karnataka',
+    description: 'A video visit to the historic shrine and its intricate architecture.',
+    url: 'https://www.youtube.com/watch?v=FGwnwBwK0QM',
+  },
+  {
+    id: 'gyfpGcJDo90',
+    title: 'Basaveshwara Temple',
+    place: 'Basavakalyan, Karnataka',
+    description: 'Discover the temple’s history, architecture, and spiritual significance.',
+    url: 'https://www.youtube.com/watch?v=gyfpGcJDo90',
+  },
+  {
+    id: 'GoFTzTNvgPc',
+    title: 'Basavanna Heritage Trail',
+    place: 'Basavakalyan, Karnataka',
+    description: 'See the Basaveshwara statue, Sharana Dhama, and nearby caves.',
+    url: 'https://www.youtube.com/watch?v=GoFTzTNvgPc',
+  },
+];
+
 export default function LandingPage() {
   const navigate = useNavigate();
   const { searchCriteria, setSearchCriteria } = useTrip();
@@ -55,6 +81,7 @@ export default function LandingPage() {
   const [allStates, setAllStates] = useState([]);
   const [featuredPlaces, setFeaturedPlaces] = useState([]);
   const [loadingFeatured, setLoadingFeatured] = useState(true);
+  const [activeVideoId, setActiveVideoId] = useState(null);
 
   useEffect(() => {
     api
@@ -358,6 +385,83 @@ export default function LandingPage() {
             >
               🐪 Demo 3: Jaipur Royal Heritage (3 Days, ₹20,000)
             </button>
+          </div>
+        </div>
+      </section>
+
+      {/* NORTH KARNATAKA HERITAGE VIDEOS */}
+      <section id="karnataka-stories" className="max-w-7xl mx-auto px-4 sm:px-6 mt-10 sm:mt-14 scroll-mt-24">
+        <div className="overflow-hidden rounded-[2rem] bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 p-4 text-white shadow-xl sm:p-8 lg:p-10">
+          <div className="mb-6 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-end sm:justify-between">
+            <div className="max-w-2xl">
+              <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-amber-200/20 bg-amber-200/10 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.18em] text-amber-200">
+                <span aria-hidden="true">✦</span>
+                Karnataka heritage
+              </div>
+              <h2 className="text-2xl font-extrabold tracking-tight sm:text-3xl lg:text-4xl">
+                Stories from North Karnataka
+              </h2>
+              <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-300 sm:text-base">
+                Visit Sharana Basaveshwara Temple in Kalaburagi and discover Basavanna’s heritage in Basavakalyan through local video stories.
+              </p>
+            </div>
+            <span className="text-xs font-semibold text-slate-400">3 video stories</span>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {HERITAGE_VIDEOS.map((video) => (
+              <article key={video.id} className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.06] shadow-lg">
+                <div className="relative aspect-video overflow-hidden bg-slate-800">
+                  {activeVideoId === video.id ? (
+                    <iframe
+                      className="absolute inset-0 h-full w-full"
+                      src={'https://www.youtube-nocookie.com/embed/' + video.id + '?autoplay=1&playsinline=1&rel=0'}
+                      title={video.title}
+                      loading="lazy"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                    />
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setActiveVideoId(video.id)}
+                      className="group absolute inset-0 flex h-full w-full items-center justify-center text-left"
+                      aria-label={'Play ' + video.title}
+                    >
+                      <img
+                        src={'https://i.ytimg.com/vi/' + video.id + '/hqdefault.jpg'}
+                        alt=""
+                        loading="lazy"
+                        referrerPolicy="strict-origin-when-cross-origin"
+                        className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                      />
+                      <span className="absolute inset-0 bg-slate-950/35 transition group-hover:bg-slate-950/20" />
+                      <span className="relative flex h-14 w-14 items-center justify-center rounded-full bg-white text-slate-950 shadow-xl transition group-hover:scale-105">
+                        <Play className="h-5 w-5 fill-current" aria-hidden="true" />
+                      </span>
+                      <span className="absolute bottom-3 left-3 rounded-full border border-white/20 bg-slate-950/70 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur">
+                        Play video
+                      </span>
+                    </button>
+                  )}
+                </div>
+                <div className="p-4 sm:p-5">
+                  <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-amber-200">{video.place}</p>
+                  <h3 className="mt-2 text-base font-extrabold text-white sm:text-lg">{video.title}</h3>
+                  <p className="mt-2 min-h-10 text-xs leading-relaxed text-slate-300 sm:text-sm">{video.description}</p>
+                  <a
+                    href={video.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-sky-200 transition hover:text-white"
+                  >
+                    Watch on YouTube
+                    <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+                  </a>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </section>
