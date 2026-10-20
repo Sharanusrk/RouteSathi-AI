@@ -74,7 +74,6 @@ export default function LandingPage() {
   const [allStates, setAllStates] = useState([]);
   const [featuredPlaces, setFeaturedPlaces] = useState([]);
   const [loadingFeatured, setLoadingFeatured] = useState(true);
-  const [activeVideoId, setActiveVideoId] = useState(null);
   const [activeHeritageIndex, setActiveHeritageIndex] = useState(0);
   const sliderTouchStartX = useRef(null);
 
@@ -138,19 +137,18 @@ export default function LandingPage() {
   };
 
   const goToHeritageSlide = (direction) => {
-    setActiveVideoId(null);
     setActiveHeritageIndex((current) => (
       current + direction + HERITAGE_VIDEOS.length
     ) % HERITAGE_VIDEOS.length);
   };
 
   useEffect(() => {
-    if (activeVideoId || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
     const timer = window.setInterval(() => {
       setActiveHeritageIndex((current) => (current + 1) % HERITAGE_VIDEOS.length);
-    }, 7000);
+    }, 9000);
     return () => window.clearInterval(timer);
-  }, [activeVideoId]);
+  }, []);
 
   return (
     <div className="pb-4 md:pb-20">
@@ -207,26 +205,41 @@ export default function LandingPage() {
                   >
                     {HERITAGE_VIDEOS.map((video, index) => (
                       <div key={video.id} className="relative h-full min-w-full">
-                        {activeVideoId === video.id ? (
-                          <iframe
-                            className="absolute inset-0 h-full w-full"
-                            src={'https://www.youtube-nocookie.com/embed/' + video.id + '?autoplay=1&playsinline=1&rel=0'}
-                            title={video.title}
-                            referrerPolicy="strict-origin-when-cross-origin"
-                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowFullScreen
-                          />
+                        {index === activeHeritageIndex ? (
+                          <div className="absolute inset-0 bg-[#10251f]">
+                            <iframe
+                              className="absolute inset-0 h-full w-full"
+                              src={'https://www.youtube-nocookie.com/embed/' + video.id + '?autoplay=1&mute=1&controls=1&playsinline=1&rel=0&loop=1&playlist=' + video.id}
+                              title={video.title + ' travel video'}
+                              referrerPolicy="strict-origin-when-cross-origin"
+                              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share"
+                              allowFullScreen
+                            />
+                            <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#10251f]/50 via-transparent to-[#10251f]/15" />
+                            <div className="pointer-events-none absolute left-4 top-4 z-10 flex items-center gap-2 rounded-full border border-white/25 bg-[#10251f]/55 p-1.5 pr-3 text-white backdrop-blur">
+                              <img
+                                src={video.poster}
+                                alt={video.photoAlt}
+                                loading="eager"
+                                className="h-11 w-11 rounded-full border-2 border-white object-cover shadow-lg sm:h-14 sm:w-14"
+                              />
+                              <span>
+                                <span className="block text-[8px] font-extrabold uppercase tracking-[0.13em] text-white/75">{video.place}</span>
+                                <span className="block text-xs font-extrabold sm:text-sm">{video.title}</span>
+                              </span>
+                            </div>
+                          </div>
                         ) : (
                           <button
                             type="button"
-                            onClick={() => setActiveVideoId(video.id)}
+                            onClick={() => setActiveHeritageIndex(index)}
                             className="group absolute inset-0 flex h-full w-full items-center justify-center text-left"
-                            aria-label={'Play ' + video.title}
+                            aria-label={'Show video and photo of ' + video.title}
                           >
                             <img
                               src={video.poster}
                               alt={video.photoAlt}
-                              loading={index === activeHeritageIndex ? 'eager' : 'lazy'}
+                              loading="lazy"
                               className="absolute inset-0 h-full w-full object-cover object-center transition duration-700 group-hover:scale-[1.03]"
                             />
                             <span className="absolute inset-0 bg-gradient-to-t from-[#10251f]/80 via-[#10251f]/10 to-[#10251f]/15" />
@@ -239,17 +252,15 @@ export default function LandingPage() {
                             </span>
                           </button>
                         )}
-                        {activeVideoId !== video.id && (
-                          <a
-                            href={video.photoSource}
-                            target="_blank"
-                            rel="noreferrer"
-                            aria-label={'Photo credit: ' + video.photoCredit}
-                            className="absolute right-5 top-5 z-20 max-w-[70%] rounded-full border border-white/25 bg-[#10251f]/55 px-2.5 py-1.5 text-[8px] font-semibold text-white/90 backdrop-blur hover:bg-[#10251f]/80"
-                          >
-                            {video.photoCredit}
-                          </a>
-                        )}
+                        <a
+                          href={video.photoSource}
+                          target="_blank"
+                          rel="noreferrer"
+                          aria-label={'Photo credit: ' + video.photoCredit}
+                          className="absolute right-5 top-5 z-20 max-w-[70%] rounded-full border border-white/25 bg-[#10251f]/55 px-2.5 py-1.5 text-[8px] font-semibold text-white/90 backdrop-blur hover:bg-[#10251f]/80"
+                        >
+                          {video.photoCredit}
+                        </a>
                       </div>
                     ))}
                   </div>
