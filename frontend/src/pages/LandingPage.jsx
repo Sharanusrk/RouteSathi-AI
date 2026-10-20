@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Sparkles,
@@ -16,6 +16,8 @@ import {
   Cpu,
   Play,
   ExternalLink,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import { api } from '../services/api';
 import { useTrip } from '../context/TripContext';
@@ -47,22 +49,13 @@ const HERITAGE_VIDEOS = [
     id: 'FGwnwBwK0QM',
     title: 'Sharana Basaveshwara Temple',
     place: 'Kalaburagi (Gulbarga), Karnataka',
-    description: 'Historic shrine in Kalaburagi.',
     url: 'https://www.youtube.com/watch?v=FGwnwBwK0QM',
   },
   {
     id: 'gyfpGcJDo90',
     title: 'Basaveshwara Temple',
     place: 'Basavakalyan, Karnataka',
-    description: 'Temple history and architecture.',
     url: 'https://www.youtube.com/watch?v=gyfpGcJDo90',
-  },
-  {
-    id: 'GoFTzTNvgPc',
-    title: 'Basavanna Heritage Trail',
-    place: 'Basavakalyan, Karnataka',
-    description: 'Statue, Sharana Dhama, and caves.',
-    url: 'https://www.youtube.com/watch?v=GoFTzTNvgPc',
   },
 ];
 
@@ -82,6 +75,8 @@ export default function LandingPage() {
   const [featuredPlaces, setFeaturedPlaces] = useState([]);
   const [loadingFeatured, setLoadingFeatured] = useState(true);
   const [activeVideoId, setActiveVideoId] = useState(null);
+  const [activeHeritageIndex, setActiveHeritageIndex] = useState(0);
+  const sliderTouchStartX = useRef(null);
 
   useEffect(() => {
     api
@@ -141,6 +136,13 @@ export default function LandingPage() {
     });
     navigate('/planner?auto=1');
   };
+  const goToHeritageSlide = (direction) => {
+    setActiveVideoId(null);
+    setActiveHeritageIndex((current) => (
+      current + direction + HERITAGE_VIDEOS.length
+    ) % HERITAGE_VIDEOS.length);
+  };
+
 
   return (
     <div className="pb-4 md:pb-20">
@@ -186,42 +188,104 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <div className="relative mx-auto w-full max-w-2xl">
+            <div
+              className="relative mx-auto w-full max-w-2xl"
+              role="region"
+              aria-label="North Karnataka video slider"
+              onTouchStart={(event) => { sliderTouchStartX.current = event.changedTouches[0]?.clientX ?? null; }}
+              onTouchEnd={(event) => {
+                const startX = sliderTouchStartX.current;
+                sliderTouchStartX.current = null;
+                const endX = event.changedTouches[0]?.clientX;
+                if (startX !== null && endX !== undefined && Math.abs(endX - startX) > 45) {
+                  goToHeritageSlide(endX < startX ? 1 : -1);
+                }
+              }}
+            >
               <div className="absolute -inset-3 rotate-2 rounded-[2rem] bg-[#d9a441]/25" aria-hidden="true" />
               <div className="relative aspect-[4/3] overflow-hidden rounded-[1.7rem] border-[6px] border-white bg-[#17231f] shadow-[0_28px_80px_-36px_rgba(23,35,31,0.55)]">
-                {activeVideoId === 'hero' ? (
-                  <iframe
-                    className="absolute inset-0 h-full w-full"
-                    src="https://www.youtube-nocookie.com/embed/4WZ2KAbuDns?autoplay=1&playsinline=1&rel=0"
-                    title="Incredible India travel film"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                  />
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => setActiveVideoId('hero')}
-                    className="group absolute inset-0 flex h-full w-full items-center justify-center text-left"
-                    aria-label="Play Incredible India travel film"
+                <div className="absolute inset-0 overflow-hidden">
+                  <div
+                    className="flex h-full transition-transform duration-500 ease-out motion-reduce:transition-none"
+                    style={{ transform: 'translateX(-' + activeHeritageIndex * 100 + '%)' }}
                   >
-                    <img
-                      src="https://i.ytimg.com/vi/4WZ2KAbuDns/hqdefault.jpg"
-                      alt="India travel film preview"
-                      className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]"
+                    {HERITAGE_VIDEOS.map((video, index) => (
+                      <div key={video.id} className="relative h-full min-w-full">
+                        {activeVideoId === video.id ? (
+                          <iframe
+                            className="absolute inset-0 h-full w-full"
+                            src={'https://www.youtube-nocookie.com/embed/' + video.id + '?autoplay=1&playsinline=1&rel=0'}
+                            title={video.title}
+                            referrerPolicy="strict-origin-when-cross-origin"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowFullScreen
+                          />
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => setActiveVideoId(video.id)}
+                            className="group absolute inset-0 flex h-full w-full items-center justify-center text-left"
+                            aria-label={'Play ' + video.title}
+                          >
+                            <img
+                              src={'https://i.ytimg.com/vi/' + video.id + '/hqdefault.jpg'}
+                              alt=""
+                              loading={index === activeHeritageIndex ? 'eager' : 'lazy'}
+                              className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]"
+                            />
+                            <span className="absolute inset-0 bg-gradient-to-t from-[#10251f]/80 via-[#10251f]/10 to-[#10251f]/15" />
+                            <span className="absolute left-5 top-5 rounded-full border border-white/25 bg-[#10251f]/40 px-3 py-1.5 text-[9px] font-extrabold uppercase tracking-[0.18em] text-white backdrop-blur">
+                              North Karnataka
+                            </span>
+                            <span className="relative flex h-16 w-16 items-center justify-center rounded-full bg-[#f5ca70] text-[#17231f] shadow-2xl transition duration-300 group-hover:scale-110">
+                              <Play className="ml-1 h-6 w-6 fill-current" aria-hidden="true" />
+                            </span>
+                            <span className="absolute bottom-5 left-5 right-16 text-white">
+                              <span className="block text-[9px] font-extrabold uppercase tracking-[0.15em] text-white/75">{video.place}</span>
+                              <span className="mt-1 block text-base font-extrabold sm:text-lg">{video.title}</span>
+                            </span>
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => goToHeritageSlide(-1)}
+                  aria-label="Previous video"
+                  className="absolute left-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-[#10251f]/50 text-white backdrop-blur transition hover:bg-[#10251f]/80 focus:outline-none focus:ring-2 focus:ring-[#f5ca70]"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => goToHeritageSlide(1)}
+                  aria-label="Next video"
+                  className="absolute right-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-[#10251f]/50 text-white backdrop-blur transition hover:bg-[#10251f]/80 focus:outline-none focus:ring-2 focus:ring-[#f5ca70]"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+              </div>
+              <div className="mt-4 flex items-center justify-between px-1">
+                <div className="flex items-center gap-2" aria-label="Choose a video">
+                  {HERITAGE_VIDEOS.map((video, index) => (
+                    <button
+                      key={video.id}
+                      type="button"
+                      onClick={() => {
+                        setActiveVideoId(null);
+                        setActiveHeritageIndex(index);
+                      }}
+                      aria-label={'Show video ' + (index + 1) + ': ' + video.title}
+                      aria-current={activeHeritageIndex === index ? 'true' : undefined}
+                      className={'h-2 rounded-full transition-all ' + (activeHeritageIndex === index ? 'w-8 bg-[#245c4a]' : 'w-2 bg-[#17231f]/25 hover:bg-[#17231f]/50')}
                     />
-                    <span className="absolute inset-0 bg-gradient-to-t from-[#10251f]/75 via-[#10251f]/10 to-[#10251f]/15" />
-                    <span className="absolute left-5 top-5 rounded-full border border-white/25 bg-[#10251f]/35 px-3 py-1.5 text-[9px] font-extrabold uppercase tracking-[0.18em] text-white backdrop-blur">
-                      India in motion
-                    </span>
-                    <span className="relative flex h-16 w-16 items-center justify-center rounded-full bg-[#f5ca70] text-[#17231f] shadow-2xl transition duration-300 group-hover:scale-110">
-                      <Play className="ml-1 h-6 w-6 fill-current" aria-hidden="true" />
-                    </span>
-                    <span className="absolute bottom-5 left-5 text-xs font-bold text-white/90">
-                      Incredible India · Play film
-                    </span>
-                  </button>
-                )}
+                  ))}
+                </div>
+                <span className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#66776f]">
+                  0{activeHeritageIndex + 1} / 02
+                </span>
               </div>
             </div>
           </div>
@@ -407,83 +471,6 @@ export default function LandingPage() {
             >
               🐪 Jaipur · 3 days
             </button>
-          </div>
-        </div>
-      </section>
-
-      {/* NORTH KARNATAKA HERITAGE VIDEOS */}
-      <section id="karnataka-stories" className="max-w-7xl mx-auto px-4 sm:px-6 mt-10 sm:mt-14 scroll-mt-24">
-        <div className="overflow-hidden rounded-[2rem] bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 p-4 text-white shadow-xl sm:p-8 lg:p-10">
-          <div className="mb-6 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-end sm:justify-between">
-            <div className="max-w-2xl">
-              <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-amber-200/20 bg-amber-200/10 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.18em] text-amber-200">
-                <span aria-hidden="true">✦</span>
-                Karnataka heritage
-              </div>
-              <h2 className="text-2xl font-extrabold tracking-tight sm:text-3xl lg:text-4xl">
-                Stories from North Karnataka
-              </h2>
-              <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-300 sm:text-base">
-                Local stories from Kalaburagi and Basavakalyan.
-              </p>
-            </div>
-            <span className="text-xs font-semibold text-slate-400">3 video stories</span>
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-            {HERITAGE_VIDEOS.map((video) => (
-              <article key={video.id} className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.06] shadow-lg">
-                <div className="relative aspect-video overflow-hidden bg-slate-800">
-                  {activeVideoId === video.id ? (
-                    <iframe
-                      className="absolute inset-0 h-full w-full"
-                      src={'https://www.youtube-nocookie.com/embed/' + video.id + '?autoplay=1&playsinline=1&rel=0'}
-                      title={video.title}
-                      loading="lazy"
-                      referrerPolicy="strict-origin-when-cross-origin"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      allowFullScreen
-                    />
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() => setActiveVideoId(video.id)}
-                      className="group absolute inset-0 flex h-full w-full items-center justify-center text-left"
-                      aria-label={'Play ' + video.title}
-                    >
-                      <img
-                        src={'https://i.ytimg.com/vi/' + video.id + '/hqdefault.jpg'}
-                        alt=""
-                        loading="lazy"
-                        referrerPolicy="strict-origin-when-cross-origin"
-                        className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                      />
-                      <span className="absolute inset-0 bg-slate-950/35 transition group-hover:bg-slate-950/20" />
-                      <span className="relative flex h-14 w-14 items-center justify-center rounded-full bg-white text-slate-950 shadow-xl transition group-hover:scale-105">
-                        <Play className="h-5 w-5 fill-current" aria-hidden="true" />
-                      </span>
-                      <span className="absolute bottom-3 left-3 rounded-full border border-white/20 bg-slate-950/70 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur">
-                        Play video
-                      </span>
-                    </button>
-                  )}
-                </div>
-                <div className="p-4 sm:p-5">
-                  <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-amber-200">{video.place}</p>
-                  <h3 className="mt-2 text-base font-extrabold text-white sm:text-lg">{video.title}</h3>
-                  <p className="mt-2 min-h-10 text-xs leading-relaxed text-slate-300 sm:text-sm">{video.description}</p>
-                  <a
-                    href={video.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-sky-200 transition hover:text-white"
-                  >
-                    Watch on YouTube
-                    <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-                  </a>
-                </div>
-              </article>
-            ))}
           </div>
         </div>
       </section>
