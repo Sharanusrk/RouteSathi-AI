@@ -9,7 +9,6 @@ import {
   FileText,
   ArrowRight,
   Cpu,
-  Play,
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
@@ -38,35 +37,20 @@ const HERO_CATEGORIES = [
   { label: 'Photography', value: 'Photography', emoji: '📸' },
 ];
 
-const HERITAGE_VIDEOS = [
+const TRAVEL_SLIDES = [
   {
-    id: 'Gg2vMsii6AI',
-    title: 'Rajasthan Bike Ride',
-    place: 'RAJASTHAN',
-    thumbnail: 'https://i.ytimg.com/vi/Gg2vMsii6AI/hqdefault.jpg',
+    src: 'https://videos.pexels.com/video-files/26812335/12012951_2160_3840_60fps.mp4',
+    poster: 'https://images.pexels.com/videos/26812335/1-world-trade-center-al-masjid-an-nabawi-big-bike-bike-26812335.jpeg?auto=compress&dpr=1&h=750&w=1260',
+    title: 'Ride into the open road',
+    place: 'INDIA · ON TWO WHEELS',
+    credit: 'https://www.pexels.com/video/motorcycle-riders-on-the-road-in-india-26812335/',
   },
   {
-    id: 'K0woZZ9QU3M',
-    title: 'Udaipur on Two Wheels',
-    place: 'RAJASTHAN · UDAIPUR',
-    thumbnail: 'https://i.ytimg.com/vi/K0woZZ9QU3M/hqdefault.jpg',
-  },
-];
-
-const HERITAGE_PHOTOS = [
-  {
-    title: 'Basavanna',
-    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Basavanna.png?width=500',
-    alt: 'Portrait of Basavanna',
-    source: 'https://commons.wikimedia.org/wiki/File:Basavanna.png',
-    credit: 'Karnataka Dept. · CC BY 4.0',
-  },
-  {
-    title: 'Sharana Basaveshwara',
-    image: 'https://commons.wikimedia.org/wiki/Special:FilePath/Interior_of_temple_Basaveshwara.jpg?width=500',
-    alt: 'Interior of Shri Sharana Basaveshwara Devasthana',
-    source: 'https://commons.wikimedia.org/wiki/File:Interior_of_temple_Basaveshwara.jpg',
-    credit: 'Kiranpawar3210 · CC BY-SA 4.0',
+    src: 'https://videos.pexels.com/video-files/4797161/4797161-uhd_3840_2160_24fps.mp4',
+    poster: 'https://images.pexels.com/videos/4797161/pexels-photo-4797161.jpeg?auto=compress&dpr=1&h=750&w=1260',
+    title: 'Rajasthan, in every frame',
+    place: 'RAJASTHAN · DESERT FORTS',
+    credit: 'https://www.pexels.com/video/citadel-in-the-desert-4797161/',
   },
 ];
 
@@ -85,7 +69,7 @@ export default function LandingPage() {
   const [allStates, setAllStates] = useState([]);
   const [featuredPlaces, setFeaturedPlaces] = useState([]);
   const [loadingFeatured, setLoadingFeatured] = useState(true);
-  const [activeHeritageIndex, setActiveHeritageIndex] = useState(0);
+  const [activeTravelIndex, setActiveTravelIndex] = useState(0);
   const sliderTouchStartX = useRef(null);
 
   useEffect(() => {
@@ -147,178 +131,117 @@ export default function LandingPage() {
     navigate('/planner?auto=1');
   };
 
-  const goToHeritageSlide = (direction) => {
-    setActiveHeritageIndex((current) => (
-      current + direction + HERITAGE_VIDEOS.length
-    ) % HERITAGE_VIDEOS.length);
+  const goToTravelSlide = (direction) => {
+    setActiveTravelIndex((current) => (
+      current + direction + TRAVEL_SLIDES.length
+    ) % TRAVEL_SLIDES.length);
   };
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
     const timer = window.setInterval(() => {
-      setActiveHeritageIndex((current) => (current + 1) % HERITAGE_VIDEOS.length);
-    }, 9000);
+      setActiveTravelIndex((current) => (current + 1) % TRAVEL_SLIDES.length);
+    }, 12000);
     return () => window.clearInterval(timer);
   }, []);
 
   return (
     <div className="pb-4 md:pb-20">
-      {/* Two-video slider: play a clip or swipe to the next. */}
-      <section className="relative overflow-hidden bg-[#f4f1e9] px-4 py-10 text-[#17231f] sm:px-6 sm:py-16 lg:py-20">
-        <div aria-hidden="true" className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-[#d9a441]/15 blur-3xl" />
-        <div aria-hidden="true" className="pointer-events-none absolute -bottom-36 left-[-5rem] h-80 w-80 rounded-full bg-[#245c4a]/10 blur-3xl" />
-        <div className="relative mx-auto max-w-7xl">
-          <div className="grid items-center gap-9 lg:grid-cols-[1fr_1fr] lg:gap-16">
-            <div className="max-w-xl">
-              <h1 className="text-5xl font-extrabold leading-[0.98] tracking-[-0.055em] sm:text-6xl lg:text-7xl">
-                India,
-                <br />
-                <span className="font-serif italic font-medium text-[#c45a2e]">your way.</span>
-              </h1>
-              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                <button
-                  type="button"
-                  onClick={() => document.getElementById('trip-planner')?.scrollIntoView({ behavior: 'smooth', block: 'center' })}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#245c4a] px-5 py-3.5 text-sm font-extrabold text-white shadow-lg shadow-[#245c4a]/20 transition hover:bg-[#194638]"
-                >
-                  Plan a trip <ArrowRight className="h-4 w-4" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => navigate('/explore')}
-                  className="inline-flex items-center justify-center rounded-xl border border-[#17231f]/15 bg-white/70 px-5 py-3.5 text-sm font-bold text-[#17231f] transition hover:bg-white"
-                >
-                  Explore places
-                </button>
-              </div>
-            </div>
+      {/* Full-bleed travel video hero inspired by the reference homepage. */}
+      <section
+        className="relative isolate flex h-[calc(100svh-76px)] min-h-[620px] max-h-[900px] items-center justify-center overflow-hidden bg-[#17231f] text-center text-white sm:min-h-[680px]"
+        role="region"
+        aria-label="Travel video slideshow"
+        onTouchStart={(event) => { sliderTouchStartX.current = event.changedTouches[0]?.clientX ?? null; }}
+        onTouchEnd={(event) => {
+          const startX = sliderTouchStartX.current;
+          sliderTouchStartX.current = null;
+          const endX = event.changedTouches[0]?.clientX;
+          if (startX !== null && endX !== undefined && Math.abs(endX - startX) > 45) {
+            goToTravelSlide(endX < startX ? 1 : -1);
+          }
+        }}
+      >
+        {TRAVEL_SLIDES.map((slide, index) => index === activeTravelIndex ? (
+          <video
+            key={slide.src}
+            className="absolute inset-0 h-full w-full object-cover"
+            src={slide.src}
+            poster={slide.poster}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            aria-label={slide.title}
+          />
+        ) : null)}
+        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/30 to-black/55" />
+        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-black/25 via-transparent to-black/25" />
 
-            <div
-              className="relative mx-auto w-full max-w-2xl"
-              role="region"
-              aria-label="Rajasthan travel video slider"
-              onTouchStart={(event) => { sliderTouchStartX.current = event.changedTouches[0]?.clientX ?? null; }}
-              onTouchEnd={(event) => {
-                const startX = sliderTouchStartX.current;
-                sliderTouchStartX.current = null;
-                const endX = event.changedTouches[0]?.clientX;
-                if (startX !== null && endX !== undefined && Math.abs(endX - startX) > 45) {
-                  goToHeritageSlide(endX < startX ? 1 : -1);
-                }
-              }}
+        <div className="relative z-10 mx-auto w-full max-w-5xl px-5 pb-12 sm:px-8">
+          <p className="mx-auto mb-5 inline-flex rounded-full border border-white/35 bg-black/20 px-4 py-2 text-[10px] font-extrabold uppercase tracking-[0.22em] text-white/90 backdrop-blur-sm sm:text-xs">
+            RouteSathi · Explore India
+          </p>
+          <h1 className="text-5xl font-black leading-[0.98] tracking-[-0.055em] drop-shadow-[0_4px_22px_rgba(0,0,0,0.35)] sm:text-7xl lg:text-8xl">
+            Discover India
+            <br />
+            <span className="font-serif font-medium italic text-[#ffd27a]">your way.</span>
+          </h1>
+          <p className="mx-auto mt-5 max-w-xl text-sm font-medium text-white/90 drop-shadow sm:text-lg">
+            Plan a trip. Travel safer.
+          </p>
+          <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
+            <button
+              type="button"
+              onClick={() => document.getElementById('trip-planner')?.scrollIntoView({ behavior: 'smooth', block: 'center' })}
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-extrabold text-[#17231f] shadow-lg transition hover:bg-[#fff2d3]"
             >
-              <div className="absolute -inset-3 rotate-2 rounded-[2rem] bg-[#d9a441]/25" aria-hidden="true" />
-              <div className="relative aspect-[4/3] overflow-hidden rounded-[1.7rem] border-[6px] border-white bg-[#17231f] shadow-[0_28px_80px_-36px_rgba(23,35,31,0.55)]">
-                <div className="absolute inset-0 overflow-hidden">
-                  <div
-                    className="flex h-full transition-transform duration-500 ease-out motion-reduce:transition-none"
-                    style={{ transform: 'translateX(-' + activeHeritageIndex * 100 + '%)' }}
-                  >
-                    {HERITAGE_VIDEOS.map((video, index) => (
-                      <div key={video.id} className="relative h-full min-w-full">
-                        {index === activeHeritageIndex ? (
-                          <div className="absolute inset-0 bg-[#10251f]">
-                            <iframe
-                              className="absolute inset-0 h-full w-full"
-                              src={'https://www.youtube-nocookie.com/embed/' + video.id + '?autoplay=1&mute=1&controls=1&playsinline=1&rel=0&loop=1&playlist=' + video.id}
-                              title={video.title + ' travel video'}
-                              referrerPolicy="strict-origin-when-cross-origin"
-                              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share"
-                              allowFullScreen
-                            />
-                            <span className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#10251f]/50 via-transparent to-[#10251f]/15" />
-                            <div className="pointer-events-none absolute left-4 top-4 z-10 rounded-full border border-white/25 bg-[#10251f]/55 px-3 py-2 text-white backdrop-blur">
-                              <span className="block text-[8px] font-extrabold uppercase tracking-[0.13em] text-white/75">{video.place}</span>
-                              <span className="block text-xs font-extrabold sm:text-sm">{video.title}</span>
-                            </div>
-                          </div>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={() => setActiveHeritageIndex(index)}
-                            className="group absolute inset-0 flex h-full w-full items-center justify-center text-left"
-                            aria-label={'Show video and photo of ' + video.title}
-                          >
-                            <img
-                              src={video.thumbnail}
-                              alt=""
-                              loading="lazy"
-                              className="absolute inset-0 h-full w-full object-cover object-center transition duration-700 group-hover:scale-[1.03]"
-                            />
-                            <span className="absolute inset-0 bg-gradient-to-t from-[#10251f]/80 via-[#10251f]/10 to-[#10251f]/15" />
-                            <span className="relative flex h-16 w-16 items-center justify-center rounded-full bg-[#f5ca70] text-[#17231f] shadow-2xl transition duration-300 group-hover:scale-110">
-                              <Play className="ml-1 h-6 w-6 fill-current" aria-hidden="true" />
-                            </span>
-                            <span className="absolute bottom-5 left-5 right-16 text-white">
-                              <span className="block text-[9px] font-extrabold uppercase tracking-[0.15em] text-white/75">{video.place}</span>
-                              <span className="mt-1 block text-base font-extrabold sm:text-lg">{video.title}</span>
-                            </span>
-                          </button>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => goToHeritageSlide(-1)}
-                  aria-label="Previous video"
-                  className="absolute left-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-[#10251f]/50 text-white backdrop-blur transition hover:bg-[#10251f]/80 focus:outline-none focus:ring-2 focus:ring-[#f5ca70]"
-                >
-                  <ChevronLeft className="h-5 w-5" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => goToHeritageSlide(1)}
-                  aria-label="Next video"
-                  className="absolute right-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-[#10251f]/50 text-white backdrop-blur transition hover:bg-[#10251f]/80 focus:outline-none focus:ring-2 focus:ring-[#f5ca70]"
-                >
-                  <ChevronRight className="h-5 w-5" />
-                </button>
-              </div>
-              <div className="mt-4 flex items-center justify-between px-1">
-                <div className="flex items-center gap-2" aria-label="Choose a video">
-                  {HERITAGE_VIDEOS.map((video, index) => (
-                    <button
-                      key={video.id}
-                      type="button"
-                      onClick={() => setActiveHeritageIndex(index)}
-                      aria-label={'Show video ' + (index + 1) + ': ' + video.title}
-                      aria-current={activeHeritageIndex === index ? 'true' : undefined}
-                      className={'h-2 rounded-full transition-all ' + (activeHeritageIndex === index ? 'w-8 bg-[#245c4a]' : 'w-2 bg-[#17231f]/25 hover:bg-[#17231f]/50')}
-                    />
-                  ))}
-                </div>
-                <span className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#66776f]">
-                  0{activeHeritageIndex + 1} / 02
-                </span>
-              </div>
-              <div className="mt-3 grid grid-cols-2 gap-2">
-                {HERITAGE_PHOTOS.map((photo) => (
-                  <a
-                    key={photo.title}
-                    href={photo.source}
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label={photo.title + ' photo; ' + photo.credit}
-                    className="flex min-w-0 items-center gap-2 rounded-xl border border-[#17231f]/10 bg-white/80 p-2 shadow-sm transition hover:bg-white"
-                  >
-                    <img
-                      src={photo.image}
-                      alt={photo.alt}
-                      loading="lazy"
-                      className="h-10 w-10 shrink-0 rounded-full object-cover"
-                    />
-                    <span className="min-w-0">
-                      <span className="block truncate text-[10px] font-extrabold text-[#17231f]">{photo.title}</span>
-                      <span className="block truncate text-[8px] text-[#66776f]">{photo.credit}</span>
-                    </span>
-                  </a>
-                ))}
-              </div>
-            </div>
+              Plan a trip <ArrowRight className="h-4 w-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate('/explore')}
+              className="inline-flex items-center justify-center rounded-xl border border-white/60 bg-black/15 px-6 py-3.5 text-sm font-bold text-white backdrop-blur-sm transition hover:bg-white/15"
+            >
+              Explore places
+            </button>
           </div>
         </div>
+
+        <div className="absolute inset-x-0 bottom-7 z-10 flex items-center justify-between px-5 sm:px-8">
+          <button
+            type="button"
+            onClick={() => goToTravelSlide(-1)}
+            aria-label="Previous travel scene"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/50 bg-black/20 text-white backdrop-blur-sm transition hover:bg-black/40 focus:outline-none focus:ring-2 focus:ring-[#ffd27a]"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+          <div className="flex items-center gap-2" aria-label="Choose a travel scene">
+            {TRAVEL_SLIDES.map((slide, index) => (
+              <button
+                key={slide.src}
+                type="button"
+                onClick={() => setActiveTravelIndex(index)}
+                aria-label={'Show travel scene ' + (index + 1) + ': ' + slide.title}
+                aria-current={activeTravelIndex === index ? 'true' : undefined}
+                className={'h-2 rounded-full transition-all ' + (activeTravelIndex === index ? 'w-8 bg-[#ffd27a]' : 'w-2 bg-white/65 hover:bg-white')}
+              />
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={() => goToTravelSlide(1)}
+            aria-label="Next travel scene"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/50 bg-black/20 text-white backdrop-blur-sm transition hover:bg-black/40 focus:outline-none focus:ring-2 focus:ring-[#ffd27a]"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
+        </div>
+        <span className="sr-only" aria-live="polite">
+          {TRAVEL_SLIDES[activeTravelIndex].place}
+        </span>
       </section>
 
       <section className="relative bg-[#f4f1e9] px-4 py-10 text-slate-900 sm:px-6 sm:py-14">
