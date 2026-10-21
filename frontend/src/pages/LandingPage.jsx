@@ -9,8 +9,6 @@ import {
   FileText,
   ArrowRight,
   Cpu,
-  ChevronLeft,
-  ChevronRight,
 } from 'lucide-react';
 import { api } from '../services/api';
 import { useTrip } from '../context/TripContext';
@@ -37,22 +35,91 @@ const HERO_CATEGORIES = [
   { label: 'Photography', value: 'Photography', emoji: '📸' },
 ];
 
-const TRAVEL_SLIDES = [
+const HERO_TRAVEL_VIDEO = {
+  src: 'https://videos.pexels.com/video-files/26812335/12012951_2160_3840_60fps.mp4',
+  poster: 'https://images.pexels.com/videos/26812335/1-world-trade-center-al-masjid-an-nabawi-big-bike-bike-26812335.jpeg?auto=compress&dpr=1&h=750&w=1260',
+};
+
+const PLACE_VIDEOS = [
   {
-    src: 'https://videos.pexels.com/video-files/26812335/12012951_2160_3840_60fps.mp4',
-    poster: 'https://images.pexels.com/videos/26812335/1-world-trade-center-al-masjid-an-nabawi-big-bike-bike-26812335.jpeg?auto=compress&dpr=1&h=750&w=1260',
-    title: 'Ride into the open road',
-    place: 'INDIA · ON TWO WHEELS',
-    credit: 'https://www.pexels.com/video/motorcycle-riders-on-the-road-in-india-26812335/',
-  },
-  {
+    title: 'Rajasthan',
+    detail: 'Desert forts',
     src: 'https://videos.pexels.com/video-files/4797161/4797161-uhd_3840_2160_24fps.mp4',
     poster: 'https://images.pexels.com/videos/4797161/pexels-photo-4797161.jpeg?auto=compress&dpr=1&h=750&w=1260',
-    title: 'Rajasthan, in every frame',
-    place: 'RAJASTHAN · DESERT FORTS',
-    credit: 'https://www.pexels.com/video/citadel-in-the-desert-4797161/',
+  },
+  {
+    title: 'Kerala',
+    detail: 'Backwaters',
+    src: 'https://videos.pexels.com/video-files/35576273/15075199_2160_3840_30fps.mp4',
+    poster: 'https://images.pexels.com/videos/35576273/aesthetic-travel-video-backwater-life-boat-journey-calm-atmosphere-35576273.jpeg?auto=compress&dpr=1&h=750&w=1260',
+  },
+  {
+    title: 'Ladakh',
+    detail: 'Mountain roads',
+    src: 'https://videos.pexels.com/video-files/27975367/12278555_2160_3840_60fps.mp4',
+    poster: 'https://images.pexels.com/videos/27975367/ladakh-ladakh-india-ladakh-travel-ladakh-trip-by-bike-27975367.jpeg?auto=compress&dpr=1&h=750&w=1260',
+  },
+  {
+    title: 'Agra',
+    detail: 'Taj Mahal',
+    src: 'https://videos.pexels.com/video-files/30061654/12894298_1080_1920_60fps.mp4',
+    poster: 'https://images.pexels.com/videos/30061654/pexels-photo-30061654.jpeg?auto=compress&dpr=1&h=750&w=1260',
+  },
+  {
+    title: 'Goa',
+    detail: 'Coastline',
+    src: 'https://videos.pexels.com/video-files/15456863/15456863-hd_1920_1080_24fps.mp4',
+    poster: 'https://images.pexels.com/videos/15456863/aerial-view-aqua-beach-beach-shack-15456863.jpeg?auto=compress&dpr=1&h=750&w=1260',
+  },
+  {
+    title: 'Across India',
+    detail: 'Open roads',
+    src: 'https://videos.pexels.com/video-files/36946421/15651997_3840_2160_60fps.mp4',
+    poster: 'https://images.pexels.com/videos/36946421/anil-sharma-bangalore-photographer-indian-photographer-page-shoot-saga-36946421.jpeg?auto=compress&dpr=1&h=750&w=1260',
   },
 ];
+
+function AutoPlayPlaceVideo({ clip }) {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return undefined;
+
+    if (typeof IntersectionObserver === 'undefined') {
+      video.play().catch(() => {});
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+      }
+    }, { rootMargin: '120px 0px', threshold: 0.15 });
+
+    observer.observe(video);
+    return () => {
+      observer.disconnect();
+      video.pause();
+    };
+  }, [clip.src]);
+
+  return (
+    <video
+      ref={videoRef}
+      className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]"
+      src={clip.src}
+      poster={clip.poster}
+      muted
+      loop
+      playsInline
+      preload="none"
+      aria-label={clip.title + ' travel video'}
+    />
+  );
+}
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -69,9 +136,6 @@ export default function LandingPage() {
   const [allStates, setAllStates] = useState([]);
   const [featuredPlaces, setFeaturedPlaces] = useState([]);
   const [loadingFeatured, setLoadingFeatured] = useState(true);
-  const [activeTravelIndex, setActiveTravelIndex] = useState(0);
-  const sliderTouchStartX = useRef(null);
-
   useEffect(() => {
     api
       .searchPlaces({ limit: 8 })
@@ -131,51 +195,25 @@ export default function LandingPage() {
     navigate('/planner?auto=1');
   };
 
-  const goToTravelSlide = (direction) => {
-    setActiveTravelIndex((current) => (
-      current + direction + TRAVEL_SLIDES.length
-    ) % TRAVEL_SLIDES.length);
-  };
-
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
-    const timer = window.setInterval(() => {
-      setActiveTravelIndex((current) => (current + 1) % TRAVEL_SLIDES.length);
-    }, 12000);
-    return () => window.clearInterval(timer);
-  }, []);
-
   return (
     <div className="pb-4 md:pb-20">
-      {/* Full-bleed travel video hero inspired by the reference homepage. */}
+      {/* Still, full-bleed travel video hero. */}
       <section
         className="relative isolate flex h-[calc(100svh-76px)] min-h-[620px] max-h-[900px] items-center justify-center overflow-hidden bg-[#17231f] text-center text-white sm:min-h-[680px]"
         role="region"
-        aria-label="Travel video slideshow"
-        onTouchStart={(event) => { sliderTouchStartX.current = event.changedTouches[0]?.clientX ?? null; }}
-        onTouchEnd={(event) => {
-          const startX = sliderTouchStartX.current;
-          sliderTouchStartX.current = null;
-          const endX = event.changedTouches[0]?.clientX;
-          if (startX !== null && endX !== undefined && Math.abs(endX - startX) > 45) {
-            goToTravelSlide(endX < startX ? 1 : -1);
-          }
-        }}
+        aria-label="Travel video"
       >
-        {TRAVEL_SLIDES.map((slide, index) => index === activeTravelIndex ? (
-          <video
-            key={slide.src}
-            className="absolute inset-0 h-full w-full object-cover"
-            src={slide.src}
-            poster={slide.poster}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            aria-label={slide.title}
-          />
-        ) : null)}
+        <video
+          className="absolute inset-0 h-full w-full object-cover"
+          src={HERO_TRAVEL_VIDEO.src}
+          poster={HERO_TRAVEL_VIDEO.poster}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-label="Motorcycle riders travelling in India"
+        />
         <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/30 to-black/55" />
         <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-black/25 via-transparent to-black/25" />
 
@@ -208,40 +246,34 @@ export default function LandingPage() {
             </button>
           </div>
         </div>
+      </section>
 
-        <div className="absolute inset-x-0 bottom-7 z-10 flex items-center justify-between px-5 sm:px-8">
-          <button
-            type="button"
-            onClick={() => goToTravelSlide(-1)}
-            aria-label="Previous travel scene"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/50 bg-black/20 text-white backdrop-blur-sm transition hover:bg-black/40 focus:outline-none focus:ring-2 focus:ring-[#ffd27a]"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </button>
-          <div className="flex items-center gap-2" aria-label="Choose a travel scene">
-            {TRAVEL_SLIDES.map((slide, index) => (
-              <button
-                key={slide.src}
-                type="button"
-                onClick={() => setActiveTravelIndex(index)}
-                aria-label={'Show travel scene ' + (index + 1) + ': ' + slide.title}
-                aria-current={activeTravelIndex === index ? 'true' : undefined}
-                className={'h-2 rounded-full transition-all ' + (activeTravelIndex === index ? 'w-8 bg-[#ffd27a]' : 'w-2 bg-white/65 hover:bg-white')}
-              />
+      {/* Place clips autoplay in place as they enter the viewport. */}
+      <section className="bg-[#f4f1e9] px-4 py-10 text-slate-900 sm:px-6 sm:py-14">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-6 flex items-end justify-between gap-4">
+            <div>
+              <p className="mb-1 text-[10px] font-extrabold uppercase tracking-[0.2em] text-emerald-700">India, in motion</p>
+              <h2 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Find your next view</h2>
+            </div>
+            <span className="hidden text-xs font-semibold text-slate-500 sm:block">6 destinations</span>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">
+            {PLACE_VIDEOS.map((clip) => (
+              <article key={clip.title} className="group relative aspect-[4/3] overflow-hidden rounded-2xl bg-slate-900 shadow-lg sm:aspect-[16/10] sm:rounded-3xl">
+                <AutoPlayPlaceVideo clip={clip} />
+                <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-3 text-white sm:p-5">
+                  <div>
+                    <h3 className="text-sm font-extrabold sm:text-lg">{clip.title}</h3>
+                    <p className="text-[10px] font-semibold text-white/80 sm:text-xs">{clip.detail}</p>
+                  </div>
+                </div>
+              </article>
             ))}
           </div>
-          <button
-            type="button"
-            onClick={() => goToTravelSlide(1)}
-            aria-label="Next travel scene"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/50 bg-black/20 text-white backdrop-blur-sm transition hover:bg-black/40 focus:outline-none focus:ring-2 focus:ring-[#ffd27a]"
-          >
-            <ChevronRight className="h-5 w-5" />
-          </button>
         </div>
-        <span className="sr-only" aria-live="polite">
-          {TRAVEL_SLIDES[activeTravelIndex].place}
-        </span>
       </section>
 
       <section className="relative bg-[#f4f1e9] px-4 py-10 text-slate-900 sm:px-6 sm:py-14">
