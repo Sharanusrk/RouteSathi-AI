@@ -88,8 +88,12 @@ export default function LandingPage() {
   const [allStates, setAllStates] = useState([]);
   const [featuredPlaces, setFeaturedPlaces] = useState([]);
   const [loadingFeatured, setLoadingFeatured] = useState(true);
-  const [activeHeroVideoIndex, setActiveHeroVideoIndex] = useState(0);
-  const heroVideoRef = useRef(null);
+  const [heroVideoIndexes, setHeroVideoIndexes] = useState([0, 1]);
+  const [activeHeroVideoSlot, setActiveHeroVideoSlot] = useState(0);
+  const [isHeroVideoTransitioning, setIsHeroVideoTransitioning] = useState(false);
+  const heroVideoRefs = useRef([null, null]);
+  const heroTransitionLock = useRef(false);
+  const heroTransitionTimer = useRef(null);
   useEffect(() => {
     api
       .searchPlaces({ limit: 8 })
@@ -107,10 +111,55 @@ export default function LandingPage() {
   }, []);
 
   useEffect(() => {
-    if (heroVideoRef.current) {
-      heroVideoRef.current.playbackRate = 1.75;
+    heroVideoRefs.current.forEach((video) => {
+      if (video) video.playbackRate = 1.75;
+    });
+  }, [heroVideoIndexes]);
+
+  useEffect(() => () => {
+    if (heroTransitionTimer.current) {
+      window.clearTimeout(heroTransitionTimer.current);
     }
-  }, [activeHeroVideoIndex]);
+  }, []);
+
+  const transitionHeroVideo = () => {
+    if (heroTransitionLock.current) return;
+
+    const fromSlot = activeHeroVideoSlot;
+    const toSlot = 1 - fromSlot;
+    const currentVideo = heroVideoRefs.current[fromSlot];
+    const nextVideo = heroVideoRefs.current[toSlot];
+    if (!currentVideo || !nextVideo) return;
+
+    heroTransitionLock.current = true;
+    nextVideo.currentTime = 0;
+    nextVideo.playbackRate = 1.75;
+    nextVideo.play().then(() => {
+      setIsHeroVideoTransitioning(true);
+      heroTransitionTimer.current = window.setTimeout(() => {
+        currentVideo.pause();
+        const upcomingIndex = (heroVideoIndexes[toSlot] + 1) % HERO_TRAVEL_VIDEOS.length;
+        setHeroVideoIndexes((indexes) =>
+          indexes.map((index, slot) => (slot === fromSlot ? upcomingIndex : index))
+        );
+        setActiveHeroVideoSlot(toSlot);
+        setIsHeroVideoTransitioning(false);
+        heroTransitionLock.current = false;
+      }, 700);
+    }).catch(() => {
+      heroTransitionLock.current = false;
+    });
+  };
+
+  const handleHeroVideoTimeUpdate = (slot) => {
+    if (slot !== activeHeroVideoSlot || heroTransitionLock.current) return;
+    const video = heroVideoRefs.current[slot];
+    if (!video || !Number.isFinite(video.duration)) return;
+
+    if (video.duration - video.currentTime <= 6) {
+      transitionHeroVideo();
+    }
+  };
 
   const toggleCategory = (catVal) => {
     setSelectedCats((prev) =>
@@ -163,19 +212,35 @@ export default function LandingPage() {
         role="region"
         aria-label="Travel video"
       >
-        <video
-          ref={heroVideoRef}
-          key={HERO_TRAVEL_VIDEOS[activeHeroVideoIndex].src}
-          className="absolute inset-0 h-full w-full object-cover"
-          src={HERO_TRAVEL_VIDEOS[activeHeroVideoIndex].src}
-          poster={HERO_TRAVEL_VIDEOS[activeHeroVideoIndex].poster}
-          autoPlay
-          muted
-          playsInline
-          preload="metadata"
-          onEnded={() => setActiveHeroVideoIndex((current) => (current + 1) % HERO_TRAVEL_VIDEOS.length)}
-          aria-label={HERO_TRAVEL_VIDEOS[activeHeroVideoIndex].title}
-        />
+        {heroVideoIndexes.map((clipIndex, slot) => {
+          const clip = HERO_TRAVEL_VIDEOS[clipIndex];
+          const isVisible = slot === activeHeroVideoSlot
+            ? !isHeroVideoTransitioning
+            : isHeroVideoTransitioning;
+
+          return (
+            <video
+              ref={(video) => {
+                heroVideoRefs.current[slot] = video;
+              }}
+              key={`${slot}-${clip.src}`}
+              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
+              src={clip.src}
+              poster={clip.poster}
+              autoPlay={slot === activeHeroVideoSlot}
+              muted
+              playsInline
+              preload={slot === activeHeroVideoSlot ? 'auto' : 'metadata'}
+              onLoadedMetadata={(event) => {
+                event.currentTarget.playbackRate = 1.75;
+              }}
+              onTimeUpdate={slot === activeHeroVideoSlot ? () => handleHeroVideoTimeUpdate(slot) : undefined}
+              onEnded={slot === activeHeroVideoSlot ? transitionHeroVideo : undefined}
+              aria-hidden={slot !== activeHeroVideoSlot}
+              aria-label={clip.title}
+            />
+          );
+        })}
         <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/30 to-black/55" />
         <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-black/25 via-transparent to-black/25" />
 
