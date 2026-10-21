@@ -165,6 +165,7 @@ export default function LandingPage() {
           muted
           playsInline
           preload="metadata"
+          playbackRate={1.75}
           onEnded={() => setActiveHeroVideoIndex((current) => (current + 1) % HERO_TRAVEL_VIDEOS.length)}
           aria-label={HERO_TRAVEL_VIDEOS[activeHeroVideoIndex].title}
         />
