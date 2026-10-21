@@ -35,91 +35,43 @@ const HERO_CATEGORIES = [
   { label: 'Photography', value: 'Photography', emoji: '📸' },
 ];
 
-const HERO_TRAVEL_VIDEO = {
-  src: 'https://videos.pexels.com/video-files/26812335/12012951_2160_3840_60fps.mp4',
-  poster: 'https://images.pexels.com/videos/26812335/1-world-trade-center-al-masjid-an-nabawi-big-bike-bike-26812335.jpeg?auto=compress&dpr=1&h=750&w=1260',
-};
-
-const PLACE_VIDEOS = [
+const HERO_TRAVEL_VIDEOS = [
   {
-    title: 'Rajasthan',
-    detail: 'Desert forts',
+    title: 'Motorcycle riders travelling in India',
+    src: 'https://videos.pexels.com/video-files/26812335/12012951_2160_3840_60fps.mp4',
+    poster: 'https://images.pexels.com/videos/26812335/1-world-trade-center-al-masjid-an-nabawi-big-bike-bike-26812335.jpeg?auto=compress&dpr=1&h=750&w=1260',
+  },
+  {
+    title: 'Rajasthan desert forts',
     src: 'https://videos.pexels.com/video-files/4797161/4797161-uhd_3840_2160_24fps.mp4',
     poster: 'https://images.pexels.com/videos/4797161/pexels-photo-4797161.jpeg?auto=compress&dpr=1&h=750&w=1260',
   },
   {
-    title: 'Kerala',
-    detail: 'Backwaters',
+    title: 'Kerala backwaters',
     src: 'https://videos.pexels.com/video-files/35576273/15075199_2160_3840_30fps.mp4',
     poster: 'https://images.pexels.com/videos/35576273/aesthetic-travel-video-backwater-life-boat-journey-calm-atmosphere-35576273.jpeg?auto=compress&dpr=1&h=750&w=1260',
   },
   {
-    title: 'Ladakh',
-    detail: 'Mountain roads',
+    title: 'Ladakh mountain roads',
     src: 'https://videos.pexels.com/video-files/27975367/12278555_2160_3840_60fps.mp4',
     poster: 'https://images.pexels.com/videos/27975367/ladakh-ladakh-india-ladakh-travel-ladakh-trip-by-bike-27975367.jpeg?auto=compress&dpr=1&h=750&w=1260',
   },
   {
-    title: 'Agra',
-    detail: 'Taj Mahal',
+    title: 'Taj Mahal in Agra',
     src: 'https://videos.pexels.com/video-files/30061654/12894298_1080_1920_60fps.mp4',
     poster: 'https://images.pexels.com/videos/30061654/pexels-photo-30061654.jpeg?auto=compress&dpr=1&h=750&w=1260',
   },
   {
-    title: 'Goa',
-    detail: 'Coastline',
+    title: 'Goa coastline',
     src: 'https://videos.pexels.com/video-files/15456863/15456863-hd_1920_1080_24fps.mp4',
     poster: 'https://images.pexels.com/videos/15456863/aerial-view-aqua-beach-beach-shack-15456863.jpeg?auto=compress&dpr=1&h=750&w=1260',
   },
   {
-    title: 'Across India',
-    detail: 'Open roads',
+    title: 'Open roads across India',
     src: 'https://videos.pexels.com/video-files/36946421/15651997_3840_2160_60fps.mp4',
     poster: 'https://images.pexels.com/videos/36946421/anil-sharma-bangalore-photographer-indian-photographer-page-shoot-saga-36946421.jpeg?auto=compress&dpr=1&h=750&w=1260',
   },
 ];
-
-function AutoPlayPlaceVideo({ clip }) {
-  const videoRef = useRef(null);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return undefined;
-
-    if (typeof IntersectionObserver === 'undefined') {
-      video.play().catch(() => {});
-      return undefined;
-    }
-
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        video.play().catch(() => {});
-      } else {
-        video.pause();
-      }
-    }, { rootMargin: '120px 0px', threshold: 0.15 });
-
-    observer.observe(video);
-    return () => {
-      observer.disconnect();
-      video.pause();
-    };
-  }, [clip.src]);
-
-  return (
-    <video
-      ref={videoRef}
-      className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]"
-      src={clip.src}
-      poster={clip.poster}
-      muted
-      loop
-      playsInline
-      preload="none"
-      aria-label={clip.title + ' travel video'}
-    />
-  );
-}
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -136,6 +88,7 @@ export default function LandingPage() {
   const [allStates, setAllStates] = useState([]);
   const [featuredPlaces, setFeaturedPlaces] = useState([]);
   const [loadingFeatured, setLoadingFeatured] = useState(true);
+  const [activeHeroVideoIndex, setActiveHeroVideoIndex] = useState(0);
   useEffect(() => {
     api
       .searchPlaces({ limit: 8 })
@@ -204,15 +157,16 @@ export default function LandingPage() {
         aria-label="Travel video"
       >
         <video
+          key={HERO_TRAVEL_VIDEOS[activeHeroVideoIndex].src}
           className="absolute inset-0 h-full w-full object-cover"
-          src={HERO_TRAVEL_VIDEO.src}
-          poster={HERO_TRAVEL_VIDEO.poster}
+          src={HERO_TRAVEL_VIDEOS[activeHeroVideoIndex].src}
+          poster={HERO_TRAVEL_VIDEOS[activeHeroVideoIndex].poster}
           autoPlay
           muted
-          loop
           playsInline
-          preload="metadata"
-          aria-label="Motorcycle riders travelling in India"
+          preload="auto"
+          onEnded={() => setActiveHeroVideoIndex((current) => (current + 1) % HERO_TRAVEL_VIDEOS.length)}
+          aria-label={HERO_TRAVEL_VIDEOS[activeHeroVideoIndex].title}
         />
         <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/30 to-black/55" />
         <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-black/25 via-transparent to-black/25" />
@@ -244,34 +198,6 @@ export default function LandingPage() {
             >
               Explore places
             </button>
-          </div>
-        </div>
-      </section>
-
-      {/* Place clips autoplay in place as they enter the viewport. */}
-      <section className="bg-[#f4f1e9] px-4 py-10 text-slate-900 sm:px-6 sm:py-14">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-6 flex items-end justify-between gap-4">
-            <div>
-              <p className="mb-1 text-[10px] font-extrabold uppercase tracking-[0.2em] text-emerald-700">India, in motion</p>
-              <h2 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Find your next view</h2>
-            </div>
-            <span className="hidden text-xs font-semibold text-slate-500 sm:block">6 destinations</span>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">
-            {PLACE_VIDEOS.map((clip) => (
-              <article key={clip.title} className="group relative aspect-[4/3] overflow-hidden rounded-2xl bg-slate-900 shadow-lg sm:aspect-[16/10] sm:rounded-3xl">
-                <AutoPlayPlaceVideo clip={clip} />
-                <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-3 text-white sm:p-5">
-                  <div>
-                    <h3 className="text-sm font-extrabold sm:text-lg">{clip.title}</h3>
-                    <p className="text-[10px] font-semibold text-white/80 sm:text-xs">{clip.detail}</p>
-                  </div>
-                </div>
-              </article>
-            ))}
           </div>
         </div>
       </section>
