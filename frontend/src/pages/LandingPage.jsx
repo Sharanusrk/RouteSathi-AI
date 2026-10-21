@@ -89,6 +89,7 @@ export default function LandingPage() {
   const [featuredPlaces, setFeaturedPlaces] = useState([]);
   const [loadingFeatured, setLoadingFeatured] = useState(true);
   const [activeHeroVideoIndex, setActiveHeroVideoIndex] = useState(0);
+  const heroVideoRef = useRef(null);
   useEffect(() => {
     api
       .searchPlaces({ limit: 8 })
@@ -104,6 +105,12 @@ export default function LandingPage() {
       .then((res) => setAllStates(res.states || []))
       .catch(() => {});
   }, []);
+
+  useEffect(() => {
+    if (heroVideoRef.current) {
+      heroVideoRef.current.playbackRate = 1.75;
+    }
+  }, [activeHeroVideoIndex]);
 
   const toggleCategory = (catVal) => {
     setSelectedCats((prev) =>
@@ -157,6 +164,7 @@ export default function LandingPage() {
         aria-label="Travel video"
       >
         <video
+          ref={heroVideoRef}
           key={HERO_TRAVEL_VIDEOS[activeHeroVideoIndex].src}
           className="absolute inset-0 h-full w-full object-cover"
           src={HERO_TRAVEL_VIDEOS[activeHeroVideoIndex].src}
@@ -165,7 +173,6 @@ export default function LandingPage() {
           muted
           playsInline
           preload="metadata"
-          playbackRate={1.75}
           onEnded={() => setActiveHeroVideoIndex((current) => (current + 1) % HERO_TRAVEL_VIDEOS.length)}
           aria-label={HERO_TRAVEL_VIDEOS[activeHeroVideoIndex].title}
         />
