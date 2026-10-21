@@ -151,7 +151,7 @@ export default function RegisterPage() {
                     required
                     value={formData.full_name}
                     onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-                    placeholder="e.g., Sai Kumar"
+                    placeholder="e.g., Sharan"
                     className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none"
                   />
                 </div>
@@ -244,7 +244,7 @@ export default function RegisterPage() {
                     type="text"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    placeholder="+91 9876543210"
+                    placeholder="9353541195"
                     className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none"
                   />
                 </div>
