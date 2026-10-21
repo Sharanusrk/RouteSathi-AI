@@ -156,7 +156,8 @@ export default function LandingPage() {
     const video = heroVideoRefs.current[slot];
     if (!video || !Number.isFinite(video.duration)) return;
 
-    if (video.duration - video.currentTime <= 6) {
+    const transitionLeadTime = Math.min(4, Math.max(1, video.duration * 0.2));
+    if (video.duration - video.currentTime <= transitionLeadTime) {
       transitionHeroVideo();
     }
   };
