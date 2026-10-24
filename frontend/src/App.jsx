@@ -1,23 +1,31 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { TripProvider } from './context/TripContext';
 import Navbar from './components/Navbar';
 
-import LandingPage from './pages/LandingPage';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import ExploreIndiaPage from './pages/ExploreIndiaPage';
-import PlaceDetailsPage from './pages/PlaceDetailsPage';
-import TripPlannerPage from './pages/TripPlannerPage';
-import InteractiveMapPage from './pages/InteractiveMapPage';
-import TransportPlannerPage from './pages/TransportPlannerPage';
-import SafetyDashboardPage from './pages/SafetyDashboardPage';
-import IncidentReportPage from './pages/IncidentReportPage';
-import PdfManagerPage from './pages/PdfManagerPage';
-import UserDashboardPage from './pages/UserDashboardPage';
-import AdminDashboardPage from './pages/AdminDashboardPage';
-import MlDashboardPage from './pages/MlDashboardPage';
+const LandingPage = lazy(() => import('./pages/LandingPage'));
+const LoginPage = lazy(() => import('./pages/LoginPage'));
+const RegisterPage = lazy(() => import('./pages/RegisterPage'));
+const ExploreIndiaPage = lazy(() => import('./pages/ExploreIndiaPage'));
+const PlaceDetailsPage = lazy(() => import('./pages/PlaceDetailsPage'));
+const TripPlannerPage = lazy(() => import('./pages/TripPlannerPage'));
+const InteractiveMapPage = lazy(() => import('./pages/InteractiveMapPage'));
+const TransportPlannerPage = lazy(() => import('./pages/TransportPlannerPage'));
+const SafetyDashboardPage = lazy(() => import('./pages/SafetyDashboardPage'));
+const IncidentReportPage = lazy(() => import('./pages/IncidentReportPage'));
+const PdfManagerPage = lazy(() => import('./pages/PdfManagerPage'));
+const UserDashboardPage = lazy(() => import('./pages/UserDashboardPage'));
+const AdminDashboardPage = lazy(() => import('./pages/AdminDashboardPage'));
+const MlDashboardPage = lazy(() => import('./pages/MlDashboardPage'));
+
+function renderPage(Page) {
+  return (
+    <Suspense fallback={<div className="flex min-h-[50vh] items-center justify-center px-4 text-sm text-slate-500" role="status">Loading page…</div>}>
+      <Page />
+    </Suspense>
+  );
+}
 
 export default function App() {
   return (
@@ -28,23 +36,23 @@ export default function App() {
             <Navbar />
             <main className="flex-1">
               <Routes>
-                <Route path="/" element={<LandingPage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/explore" element={<ExploreIndiaPage />} />
-                <Route path="/places/:id" element={<PlaceDetailsPage />} />
-                <Route path="/planner" element={<TripPlannerPage />} />
-                <Route path="/trip-planner" element={<TripPlannerPage />} />
-                <Route path="/recommendations" element={<TripPlannerPage />} />
-                <Route path="/map" element={<InteractiveMapPage />} />
-                <Route path="/transport" element={<TransportPlannerPage />} />
-                <Route path="/safety" element={<SafetyDashboardPage />} />
-                <Route path="/incidents" element={<IncidentReportPage />} />
-                <Route path="/pdf" element={<PdfManagerPage />} />
-                <Route path="/pdf-manager" element={<PdfManagerPage />} />
-                <Route path="/dashboard" element={<UserDashboardPage />} />
-                <Route path="/admin" element={<AdminDashboardPage />} />
-                <Route path="/ml-dashboard" element={<MlDashboardPage />} />
+                <Route path="/" element={renderPage(LandingPage)} />
+                <Route path="/login" element={renderPage(LoginPage)} />
+                <Route path="/register" element={renderPage(RegisterPage)} />
+                <Route path="/explore" element={renderPage(ExploreIndiaPage)} />
+                <Route path="/places/:id" element={renderPage(PlaceDetailsPage)} />
+                <Route path="/planner" element={renderPage(TripPlannerPage)} />
+                <Route path="/trip-planner" element={renderPage(TripPlannerPage)} />
+                <Route path="/recommendations" element={renderPage(TripPlannerPage)} />
+                <Route path="/map" element={renderPage(InteractiveMapPage)} />
+                <Route path="/transport" element={renderPage(TransportPlannerPage)} />
+                <Route path="/safety" element={renderPage(SafetyDashboardPage)} />
+                <Route path="/incidents" element={renderPage(IncidentReportPage)} />
+                <Route path="/pdf" element={renderPage(PdfManagerPage)} />
+                <Route path="/pdf-manager" element={renderPage(PdfManagerPage)} />
+                <Route path="/dashboard" element={renderPage(UserDashboardPage)} />
+                <Route path="/admin" element={renderPage(AdminDashboardPage)} />
+                <Route path="/ml-dashboard" element={renderPage(MlDashboardPage)} />
               </Routes>
             </main>
 
@@ -103,3 +111,4 @@ export default function App() {
     </AuthProvider>
   );
 }
+
