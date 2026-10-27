@@ -298,7 +298,7 @@ export default function LandingPage() {
           <form
             onSubmit={handlePlanTrip}
             id="trip-planner"
-            className="mx-auto max-w-6xl rounded-[1.35rem] border border-white bg-white p-4 text-slate-900 shadow-[0_24px_80px_-48px_rgba(23,35,31,0.45)] sm:p-7 scroll-mt-28"
+            className="mx-auto max-w-6xl rounded-[1.75rem] border border-white bg-white p-4 text-slate-900 shadow-[0_24px_80px_-48px_rgba(23,35,31,0.45)] sm:p-7 scroll-mt-28"
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4 items-end">
               {/* 1. FROM: Starting Location (All Indian Cities) */}
