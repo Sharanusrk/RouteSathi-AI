@@ -37,20 +37,20 @@ const HERO_CATEGORIES = [
 
 const HERO_TRAVEL_VIDEOS = [
   {
-    title: 'Motorcycle riders travelling in India',
-    src: 'https://videos.pexels.com/video-files/26812335/12012951_2160_3840_60fps.mp4',
+    title: 'Motorbike on an Indian rural road',
+    src: 'https://videos.pexels.com/video-files/10156137/10156137-sd_960_540_30fps.mp4',
   },
   {
     title: 'Rajasthan desert forts',
-    src: 'https://videos.pexels.com/video-files/4797161/4797161-uhd_3840_2160_24fps.mp4',
+    src: 'https://videos.pexels.com/video-files/4797161/4797161-sd_960_540_24fps.mp4',
   },
   {
     title: 'Kerala backwaters',
-    src: 'https://videos.pexels.com/video-files/35576273/15075199_2160_3840_30fps.mp4',
+    src: 'https://videos.pexels.com/video-files/29988893/12867892_1920_1080_24fps.mp4',
   },
   {
-    title: 'Ladakh mountain roads',
-    src: 'https://videos.pexels.com/video-files/27975367/12278555_2160_3840_60fps.mp4',
+    title: 'Motorcycle ride through the countryside',
+    src: 'https://videos.pexels.com/video-files/5052419/5052419-sd_960_540_30fps.mp4',
   },
   {
     title: 'Taj Mahal in Agra',
@@ -58,11 +58,11 @@ const HERO_TRAVEL_VIDEOS = [
   },
   {
     title: 'Goa coastline',
-    src: 'https://videos.pexels.com/video-files/15456863/15456863-hd_1920_1080_24fps.mp4',
+    src: 'https://videos.pexels.com/video-files/15456863/15456863-sd_960_540_24fps.mp4',
   },
   {
-    title: 'Open roads across India',
-    src: 'https://videos.pexels.com/video-files/36946421/15651997_3840_2160_60fps.mp4',
+    title: 'Misty Indian village road',
+    src: 'https://videos.pexels.com/video-files/35644820/15105234_3364_1440_24fps.mp4',
   },
 ];
 
@@ -129,7 +129,7 @@ export default function LandingPage() {
 
   useEffect(() => {
     heroVideoRefs.current.forEach((video) => {
-      if (video) video.playbackRate = 1.75;
+      if (video) video.playbackRate = 1.35;
     });
   }, [heroVideoIndexes]);
 
@@ -150,7 +150,7 @@ export default function LandingPage() {
 
     heroTransitionLock.current = true;
     nextVideo.currentTime = 0;
-    nextVideo.playbackRate = 1.75;
+    nextVideo.playbackRate = 1.35;
     nextVideo.play().then(() => {
       setIsHeroVideoTransitioning(true);
       heroTransitionTimer.current = window.setTimeout(() => {
@@ -250,7 +250,7 @@ export default function LandingPage() {
               playsInline
               preload={heroVideosEnabled ? (slot === activeHeroVideoSlot ? 'auto' : 'metadata') : 'none'}
               onLoadedMetadata={(event) => {
-                event.currentTarget.playbackRate = 1.75;
+                event.currentTarget.playbackRate = 1.35;
               }}
               onTimeUpdate={slot === activeHeroVideoSlot ? () => handleHeroVideoTimeUpdate(slot) : undefined}
               onEnded={slot === activeHeroVideoSlot ? transitionHeroVideo : undefined}
@@ -298,7 +298,7 @@ export default function LandingPage() {
           <form
             onSubmit={handlePlanTrip}
             id="trip-planner"
-            className="mx-auto max-w-6xl rounded-[1.75rem] border border-white bg-white p-4 text-slate-900 shadow-[0_24px_80px_-48px_rgba(23,35,31,0.45)] sm:p-7 scroll-mt-28"
+            className="mx-auto max-w-6xl rounded-[1.35rem] border border-white bg-white p-4 text-slate-900 shadow-[0_24px_80px_-48px_rgba(23,35,31,0.45)] sm:p-7 scroll-mt-28"
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4 items-end">
               {/* 1. FROM: Starting Location (All Indian Cities) */}
