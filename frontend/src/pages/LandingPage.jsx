@@ -39,37 +39,30 @@ const HERO_TRAVEL_VIDEOS = [
   {
     title: 'Motorcycle riders travelling in India',
     src: 'https://videos.pexels.com/video-files/26812335/12012951_2160_3840_60fps.mp4',
-    poster: 'https://images.pexels.com/videos/26812335/1-world-trade-center-al-masjid-an-nabawi-big-bike-bike-26812335.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=600&w=960&q=65',
   },
   {
     title: 'Rajasthan desert forts',
     src: 'https://videos.pexels.com/video-files/4797161/4797161-uhd_3840_2160_24fps.mp4',
-    poster: 'https://images.pexels.com/videos/4797161/pexels-photo-4797161.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=600&w=960&q=65',
   },
   {
     title: 'Kerala backwaters',
     src: 'https://videos.pexels.com/video-files/35576273/15075199_2160_3840_30fps.mp4',
-    poster: 'https://images.pexels.com/videos/35576273/aesthetic-travel-video-backwater-life-boat-journey-calm-atmosphere-35576273.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=600&w=960&q=65',
   },
   {
     title: 'Ladakh mountain roads',
     src: 'https://videos.pexels.com/video-files/27975367/12278555_2160_3840_60fps.mp4',
-    poster: 'https://images.pexels.com/videos/27975367/ladakh-ladakh-india-ladakh-travel-ladakh-trip-by-bike-27975367.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=600&w=960&q=65',
   },
   {
     title: 'Taj Mahal in Agra',
     src: 'https://videos.pexels.com/video-files/30061654/12894298_1080_1920_60fps.mp4',
-    poster: 'https://images.pexels.com/videos/30061654/pexels-photo-30061654.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=600&w=960&q=65',
   },
   {
     title: 'Goa coastline',
     src: 'https://videos.pexels.com/video-files/15456863/15456863-hd_1920_1080_24fps.mp4',
-    poster: 'https://images.pexels.com/videos/15456863/aerial-view-aqua-beach-beach-shack-15456863.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=600&w=960&q=65',
   },
   {
     title: 'Open roads across India',
     src: 'https://videos.pexels.com/video-files/36946421/15651997_3840_2160_60fps.mp4',
-    poster: 'https://images.pexels.com/videos/36946421/anil-sharma-bangalore-photographer-indian-photographer-page-shoot-saga-36946421.jpeg?auto=compress&cs=tinysrgb&dpr=1&fit=crop&h=600&w=960&q=65',
   },
 ];
 
@@ -91,9 +84,33 @@ export default function LandingPage() {
   const [heroVideoIndexes, setHeroVideoIndexes] = useState([0, 1]);
   const [activeHeroVideoSlot, setActiveHeroVideoSlot] = useState(0);
   const [isHeroVideoTransitioning, setIsHeroVideoTransitioning] = useState(false);
+  const [heroVideosEnabled, setHeroVideosEnabled] = useState(false);
   const heroVideoRefs = useRef([null, null]);
   const heroTransitionLock = useRef(false);
   const heroTransitionTimer = useRef(null);
+  useEffect(() => {
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const slowConnection = connection?.saveData || ['slow-2g', '2g', '3g'].includes(connection?.effectiveType);
+    if (reducedMotion || slowConnection) return undefined;
+
+    const startVideos = () => setHeroVideosEnabled(true);
+    let idleHandle;
+    let timer;
+    if (typeof window.requestIdleCallback === 'function') {
+      idleHandle = window.requestIdleCallback(startVideos, { timeout: 1400 });
+    } else {
+      timer = window.setTimeout(startVideos, 900);
+    }
+
+    return () => {
+      if (idleHandle !== undefined && typeof window.cancelIdleCallback === 'function') {
+        window.cancelIdleCallback(idleHandle);
+      }
+      if (timer) window.clearTimeout(timer);
+    };
+  }, []);
+
   useEffect(() => {
     api
       .searchPlaces({ limit: 8 })
@@ -226,12 +243,12 @@ export default function LandingPage() {
               }}
               key={`${slot}-${clip.src}`}
               className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
-              src={clip.src}
-              poster={slot === activeHeroVideoSlot ? clip.poster : undefined}
-              autoPlay={slot === activeHeroVideoSlot}
+              src={heroVideosEnabled ? clip.src : undefined}
+              poster="/travel-hero-fallback.svg"
+              autoPlay={heroVideosEnabled && slot === activeHeroVideoSlot}
               muted
               playsInline
-              preload={slot === activeHeroVideoSlot ? 'auto' : 'metadata'}
+              preload={heroVideosEnabled ? (slot === activeHeroVideoSlot ? 'auto' : 'metadata') : 'none'}
               onLoadedMetadata={(event) => {
                 event.currentTarget.playbackRate = 1.75;
               }}
